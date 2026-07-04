@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Marketplace%20assets/hero_banner.png" alt="MIDI Pro Banner" width="100%">
+  <img src="images/hero_banner.png" alt="MIDI Pro Banner" width="100%">
 </p>
 
 # 🎹 MIDI Pro
