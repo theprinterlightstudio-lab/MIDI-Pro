@@ -115,3 +115,9 @@ Every contribution is greatly appreciated. ❤️
 - 🎛 Touch Sliders & Rotary Controls
 - 🔌 Multi-Port MIDI Support
 - 🚨 Panic (All Notes Off)
+
+## 📖 Documentation
+
+🌐 **Interactive User Guide**
+
+https://theprinterlightstudio-lab.github.io/MIDI-Pro/
