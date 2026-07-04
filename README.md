@@ -2,12 +2,7 @@
   <img src="images/hero_banner.png" alt="MIDI Pro Banner" width="100%">
 </p>
 
-<p align="center">
-
-<a href="./com.printerlight.midipro_RC1_WINDOWS.tpp">
-<img src="https://img.shields.io/badge/⬇%20Download-RC1%20Windows-orange?style=for-the-badge" alt="Download RC1">
-</a>
-
+</p>
 &nbsp;
 
 <a href="https://ko-fi.com/printerlight">
@@ -20,7 +15,17 @@
 <img src="https://img.shields.io/badge/💛%20Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Donate via PayPal">
 </a>
 
+&nbsp;
+<a href="./com.printerlight.midipro_RC1_WINDOWS.tpp">
+<img src="https://img.shields.io/badge/⬇%20Download-RC1%20Windows-orange?style=for-the-badge" alt="Download RC1">
+</a>
 </p>
+
+<p align="center">
+
+📄 **[User Guide (PDF)](./MIDI_Pro_Guide_Light.pdf)** •
+📝 **[Markdown Guide](./MIDI_Pro_User_Guide.md)** •
+🌙 **[Dark Edition](./MIDI_Pro_Guide_Dark.pdf)**
 
 # 🎹 MIDI Pro
 
@@ -63,13 +68,17 @@ The latest package includes:
 
 ---
 
+
+
+</p>
+
 ## ❤️ Support MIDI Pro
 
 MIDI Pro is free to use.
 
 If MIDI Pro has improved your workflow and you'd like to support future development, you can support the project using one of the following methods.
 
-<p align="center">
+<p>
 
 <a href="https://ko-fi.com/printerlight">
 <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" height="50" alt="Support on Ko-fi">
