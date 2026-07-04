@@ -1,4 +1,6 @@
-![MIDI Pro Hero](hero_banner.png)
+<p align="center">
+  <img src="images/hero_banner.png" alt="MIDI Pro Banner" width="100%">
+</p>
 
 # 🎹 MIDI Pro
 
