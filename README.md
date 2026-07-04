@@ -1,2 +1,15 @@
-# MIDI-Pro
-MIDI Pro is a professional MIDI plugin for Touch Portal that lets you send MIDI Notes, Control Change, Program Change, Pitch Bend, and advanced controller messages with live runtime telemetry, MIDI Learn, touch controls, and multi-port support.
+# 🎹 MIDI Pro
+
+Professional MIDI Integration for Touch Portal
+
+> **Current Release:** RC1 (Windows)
+
+## 📥 Download
+
+Download the latest Windows release here:
+
+➡️ **com.printerlight.midipro_RC1_WINDOWS.tpp**
+
+Windows only for RC1.
+
+macOS and Linux support are currently under development.
