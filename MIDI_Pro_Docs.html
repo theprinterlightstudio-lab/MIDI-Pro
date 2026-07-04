@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDI Pro — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root, [data-theme="dark"] {
+  --bg:        #14161B;
+  --bg-elev:   #191C22;
+  --panel:     #1C1F27;
+  --panel-2:   #20242D;
+  --border:    #2E323D;
+  --ink:       #EEEAE1;
+  --ink-dim:   #939AAC;
+  --ink-faint: #5B6170;
+  --signal:      #FFA726;
+  --signal-soft: rgba(255,167,38,0.12);
+  --signal-line: rgba(255,167,38,0.35);
+  --trace:       #45E6C2;
+  --trace-soft:  rgba(69,230,194,0.12);
+  --trace-line:  rgba(69,230,194,0.35);
+  --panic:       #FF6259;
+  --panic-soft:  rgba(255,98,89,0.12);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --code-bg: #101216;
+}
+[data-theme="light"] {
+  --bg:        #FFFFFF;
+  --bg-elev:   #FBFBFC;
+  --panel:     #F5F6F8;
+  --panel-2:   #EEF0F3;
+  --border:    #E1E4EA;
+  --ink:       #1A1D23;
+  --ink-dim:   #5B6170;
+  --ink-faint: #8B90A0;
+  --signal:      #C4650A;
+  --signal-soft: rgba(196,101,10,0.08);
+  --signal-line: rgba(196,101,10,0.30);
+  --trace:       #0E8F7D;
+  --trace-soft:  rgba(14,143,125,0.08);
+  --trace-line:  rgba(14,143,125,0.30);
+  --panic:       #D6483F;
+  --panic-soft:  rgba(214,72,63,0.08);
+  --shadow: 0 8px 30px rgba(20,22,27,0.08);
+  --code-bg: #F5F6F8;
+}
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background .2s ease, color .2s ease;
+}
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  scroll-margin-top: 84px;
+}
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+a { color: var(--trace); text-decoration: none; }
+a:hover { text-decoration: underline; }
+::selection { background: var(--signal); color: #14161B; }
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar {
+  position: fixed; top:0; left:0; right:0; height: 60px; z-index: 100;
+  background: var(--bg-elev); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 14px; padding: 0 18px;
+}
+.topbar .brand {
+  font-family: 'Space Grotesk'; font-weight: 700; font-size: 17px;
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.topbar .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--signal); }
+.topbar .brand .pro { color: var(--signal); }
+.hamburger {
+  display: none; background: none; border: 1px solid var(--border); border-radius: 7px;
+  width: 38px; height: 38px; color: var(--ink); cursor: pointer; font-size: 18px;
+  align-items: center; justify-content: center;
+}
+.searchbox { flex: 1; max-width: 460px; position: relative; }
+.searchbox input {
+  width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--ink); padding: 9px 14px 9px 36px; font-family: 'Inter'; font-size: 14px;
+  outline: none;
+}
+.searchbox input:focus { border-color: var(--trace-line); }
+.searchbox .icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: 14px; pointer-events: none; }
+.searchbox kbd {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-family: 'JetBrains Mono'; font-size: 10px; color: var(--ink-faint);
+  border: 1px solid var(--border); border-radius: 4px; padding: 2px 5px;
+}
+#search-results {
+  position: absolute; top: 44px; left: 0; right: 0; background: var(--panel);
+  border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow);
+  max-height: 360px; overflow-y: auto; display: none; z-index: 200;
+}
+#search-results a {
+  display: block; padding: 10px 14px; color: var(--ink); border-bottom: 1px solid var(--border); font-size: 13.5px;
+}
+#search-results a:last-child { border-bottom: none; }
+#search-results a:hover { background: var(--panel-2); text-decoration: none; }
+#search-results .sr-cat { font-family: 'JetBrains Mono'; font-size: 9px; color: var(--trace); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px; }
+.topbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.theme-toggle {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  width: 38px; height: 38px; cursor: pointer; color: var(--ink); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   SHELL LAYOUT
+   ============================================================ */
+.shell { display: flex; padding-top: 60px; min-height: 100vh; }
+.sidebar {
+  width: 280px; flex-shrink: 0; position: fixed; top: 60px; bottom: 0; left: 0;
+  overflow-y: auto; background: var(--bg-elev); border-right: 1px solid var(--border);
+  padding: 22px 14px 60px;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.nav-group { margin-bottom: 22px; }
+.nav-group-title {
+  font-family: 'JetBrains Mono'; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--ink-faint); padding: 0 12px 8px;
+}
+.nav-link {
+  display: block; padding: 7px 12px; border-radius: 7px; font-size: 14px;
+  color: var(--ink-dim); border-left: 2px solid transparent; margin-bottom: 1px;
+}
+.nav-link:hover { background: var(--panel); color: var(--ink); text-decoration: none; }
+.nav-link.active { color: var(--signal); background: var(--signal-soft); border-left-color: var(--signal); font-weight: 500; }
+.content {
+  margin-left: 280px; flex: 1; max-width: 880px; padding: 40px 56px 120px;
+}
+.content-inner { max-width: 780px; }
+
+/* ============================================================
+   TYPOGRAPHY / CONTENT ELEMENTS
+   ============================================================ */
+.page-h1 { font-size: 30px; margin: 0 0 6px; }
+.eyebrow {
+  font-family: 'JetBrains Mono'; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  margin: 0 0 10px; display: flex; align-items: center; gap: 8px;
+}
+.eyebrow.amber { color: var(--signal); } .eyebrow.teal { color: var(--trace); }
+.lead { font-size: 17px; color: var(--ink-dim); max-width: 620px; margin: 0 0 18px; }
+section.doc-section { padding-top: 44px; margin-top: -44px; }
+h2.h2 { font-size: 23px; margin: 40px 0 14px; padding-top: 6px; border-top: 1px solid var(--border); padding-top: 24px;}
+h2.h2:first-of-type { border-top: none; padding-top: 0; }
+h3.h3 { font-size: 18px; margin: 28px 0 10px; }
+p { margin: 0 0 14px; color: var(--ink); }
+.dim { color: var(--ink-dim); }
+
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px 22px; margin-bottom: 16px;
+}
+.card.amber-edge { border-left: 3px solid var(--signal); }
+.card.teal-edge { border-left: 3px solid var(--trace); }
+.card.panic-edge { border-left: 3px solid var(--panic); background: linear-gradient(90deg, var(--panic-soft), var(--panel) 45%); }
+.card-title { font-family:'Space Grotesk'; font-weight:600; font-size:16px; margin:0 0 4px; display:flex; justify-content:space-between; align-items:baseline; gap: 10px;}
+.card-title .tag { font-family:'JetBrains Mono'; font-size:9.5px; letter-spacing:1px; color:var(--ink-faint); text-transform:uppercase; font-weight:400; white-space:nowrap;}
+.card-sub { font-size: 14px; color: var(--ink-dim); margin-bottom: 12px; }
+
+table.ftable { width:100%; border-collapse:collapse; margin-top:8px; font-size: 14px;}
+table.ftable td { padding:8px 10px; vertical-align:top; border-top:1px solid var(--border); }
+table.ftable tr:first-child td { border-top:none; }
+table.ftable td.fname { font-family:'JetBrains Mono'; color:var(--signal); font-size:12.5px; white-space:nowrap; width:150px; text-transform:uppercase; letter-spacing:0.3px; padding-top:9px;}
+
+table.reftable { width:100%; border-collapse:collapse; font-size:14px; margin: 10px 0 20px;}
+table.reftable th { font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-faint); text-align:left; padding:8px 12px; border-bottom:1px solid var(--border);}
+table.reftable td { padding:9px 12px; border-bottom:1px solid var(--border); }
+table.reftable tr:last-child td { border-bottom:none; }
+table.reftable tr:hover td { background: var(--panel); }
+
+.pill { display:inline-flex; align-items:center; gap:5px; font-family:'JetBrains Mono'; font-size:10px; letter-spacing:0.5px; text-transform:uppercase; padding:3px 9px; border-radius:20px; background:var(--signal-soft); color:var(--signal); border:1px solid var(--signal-line); margin: 2px 3px 2px 0;}
+.pill.teal { background: var(--trace-soft); color: var(--trace); border-color: var(--trace-line); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono'; font-size: 13px;
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px 3px 10px;
+  color: var(--trace); cursor: pointer; margin: 1px 0;
+}
+.chip.amber { color: var(--signal); }
+.chip .copy-btn {
+  background: var(--panel-2); border: none; border-radius: 4px; width: 20px; height: 20px; cursor: pointer;
+  color: var(--ink-faint); font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.chip .copy-btn:hover { color: var(--ink); background: var(--border); }
+.chip .copy-btn.copied { color: var(--trace); }
+
+.codeblock {
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px 18px; font-family: 'JetBrains Mono'; font-size: 13.5px; line-height: 1.7;
+  overflow-x: auto; position: relative; margin: 14px 0;
+}
+.codeblock .copy-btn {
+  position: absolute; top: 10px; right: 10px; background: var(--panel-2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 9px; font-size: 10.5px; color: var(--ink-dim); cursor: pointer; font-family: 'Inter';
+}
+.codeblock .copy-btn:hover { color: var(--ink); }
+.codeblock .copy-btn.copied { color: var(--trace); border-color: var(--trace-line); }
+
+.callout { border:1px solid var(--trace-line); background:var(--trace-soft); border-radius:10px; padding:16px 20px; font-size:14.5px; margin:18px 0;}
+.callout .lbl { font-family:'JetBrains Mono'; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--trace); margin-bottom:6px; display:block;}
+.callout.warn { border-color: var(--signal-line); background: var(--signal-soft); }
+.callout.warn .lbl { color: var(--signal); }
+
+.steps { counter-reset: step; margin: 16px 0; }
+.step { display:flex; gap:14px; margin-bottom:12px; align-items:flex-start;}
+.step .num { counter-increment: step; font-family:'Space Grotesk'; font-weight:700; font-size:14px; color:var(--bg); background:var(--signal); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.step .num::before { content: counter(step); }
+.step .txt { padding-top:4px; font-size:14.5px; }
+
+details.adv {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px; margin: 14px 0; overflow: hidden;
+}
+details.adv summary {
+  padding: 13px 18px; cursor: pointer; font-family: 'Space Grotesk'; font-weight: 600; font-size: 14.5px;
+  list-style: none; display: flex; align-items: center; justify-content: space-between;
+}
+details.adv summary::-webkit-details-marker { display: none; }
+details.adv summary::after { content: '▸'; color: var(--ink-faint); transition: transform .15s; }
+details.adv[open] summary::after { transform: rotate(90deg); }
+details.adv summary:hover { background: var(--panel-2); }
+details.adv .adv-body { padding: 0 18px 18px; border-top: 1px solid var(--border); }
+
+.grid2 { display:flex; gap:16px; flex-wrap: wrap; } .grid2 > div { flex:1; min-width: 260px;}
+
+.scenario-num { font-family:'Space Grotesk'; font-weight:700; font-size:26px; color:var(--signal); opacity:0.45; line-height:1; }
+
+/* Signal-chain diagram (SVG uses currentColor via classes below) */
+.diagram-wrap { text-align:center; margin: 22px 0; }
+.diagram-wrap svg text { fill: var(--ink); }
+.diagram-wrap svg .dim-text { fill: var(--ink-dim); }
+.diagram-wrap svg .mono-text { font-family: 'JetBrains Mono'; }
+
+footer.doc-footer {
+  margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono'; font-size: 11px; color: var(--ink-faint); display: flex; justify-content: space-between;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 980px) {
+  .content { margin-left: 0; padding: 32px 24px 100px; max-width: 100%; }
+  .sidebar { transform: translateX(-100%); transition: transform .2s ease; z-index: 150; box-shadow: var(--shadow); width: 300px;}
+  .sidebar.open { transform: translateX(0); }
+  .hamburger { display: flex; }
+  .searchbox { max-width: none; }
+  .topbar .brand .full-tag { display: none; }
+}
+@media (max-width: 600px) {
+  .content { padding: 24px 16px 90px; }
+  .page-h1 { font-size: 24px; }
+  .lead { font-size: 15px; }
+  table.ftable td.fname { width: 110px; font-size: 11px; }
+}
+.sidebar-overlay {
+  display: none; position: fixed; inset: 60px 0 0 0; background: rgba(0,0,0,0.4); z-index: 140;
+}
+.sidebar-overlay.show { display: block; }
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  .topbar, .sidebar, .sidebar-overlay { display: none !important; }
+  .content { margin-left: 0; padding: 0; max-width: 100%; }
+  body { background: #fff; color: #000; }
+  a { color: #000; text-decoration: underline; }
+  .card, .callout, table.reftable, table.ftable, details.adv { break-inside: avoid; border-color: #ccc !important; background: #f7f7f7 !important; }
+  details.adv { display: block; }
+  details.adv .adv-body { display: block !important; }
+  .codeblock, .chip { background: #f0f0f0 !important; border-color: #ccc !important; color: #000 !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <div class="brand"><span class="dot"></span>MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:13px;margin-left:4px;">Documentation</span></div>
+  <div class="searchbox">
+    <span class="icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Search the guide…" autocomplete="off">
+    <kbd>/</kbd>
+    <div id="search-results"></div>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" href="#quick-start">Quick Start</a><a class="nav-link" href="#core-concepts">Core Concepts</a><a class="nav-link" href="#midi-primer">MIDI Primer</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" href="#actions">The Actions</a><a class="nav-link" href="#connectors">The Connectors</a><a class="nav-link" href="#which-control">Which Control Should I Use?</a></div><div class="nav-group"><div class="nav-group-title">MIDI Learn</div><a class="nav-link" href="#midi-learn">Diagnose Anything</a></div><div class="nav-group"><div class="nav-group-title">Runtime Telemetry</div><a class="nav-link" href="#telemetry-states">Persistent States</a><a class="nav-link" href="#telemetry-display">Showing a State On Screen</a><a class="nav-link" href="#telemetry-events">TX Events</a><a class="nav-link" href="#states-vs-events">States vs. Events</a></div><div class="nav-group"><div class="nav-group-title">Guides</div><a class="nav-link" href="#scenarios">Real-World Scenarios</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" href="#quick-reference">Quick Reference</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" href="#troubleshooting">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      <section class="doc-section" id="quick-start">
+<div class="eyebrow amber">Getting Started</div>
+<h1 class="page-h1">Absolute Beginner Quick Start</h1>
+<p class="lead">Already know Touch Portal? Skip to <a href="#core-concepts">Core Concepts</a>. This section gets someone with zero experience to a working test in three steps.</p>
+
+<h2 class="h2">What this plugin actually does</h2>
+<p>MIDI Pro turns Touch Portal buttons, sliders, and dials into a MIDI controller. Press a button, and MIDI Pro sends a real MIDI message out of your computer to your DAW, a hardware synth, or any other MIDI-listening software. It can also <b>listen</b> to MIDI coming in, and — its signature feature — automatically show you what was just sent, without needing your gear to echo anything back.</p>
+
+<div class="callout">
+  <span class="lbl">No hardware? No problem</span>
+  Install a free virtual MIDI cable and test everything on your computer alone: <b>loopMIDI</b> on Windows, or the built-in <b>IAC Driver</b> on macOS (Audio MIDI Setup → Window → Show MIDI Studio). Either one shows up in every MIDI Out / MIDI In dropdown in MIDI Pro and in your DAW.
+</div>
+
+<h2 class="h2">Your first action, in five steps</h2>
+<div class="steps">
+  <div class="step"><div class="num"></div><div class="txt">Open a Touch Portal page and click a button to edit it.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">In the Actions list, open the <b>MIDI Pro</b> category.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Drag <b>MIDI Note</b> onto the button.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Set <b>MIDI Out</b> to your virtual port or real device.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Press the button. If your DAW is listening on that port, a note comes in — the whole loop works.</div></div>
+</div>
+
+<h2 class="h2">Watch it react</h2>
+<p>Try <a href="#midi-learn">MIDI Learn</a> next — press a key on your real keyboard and watch MIDI Pro tell you exactly what it received. It's the fastest way to understand this plugin's whole design: it doesn't just send blindly, it can show you everything.</p>
+</section>
+<section class="doc-section" id="core-concepts">
+<div class="eyebrow amber">Getting Started</div>
+<h1 class="page-h1">Core Concepts</h1>
+<p class="lead">Four building blocks. Understanding the difference between them is the single most useful thing this guide can teach you.</p>
+
+<table class="reftable"><tr><th>Concept</th><th>What it is</th><th>Example</th></tr><tr><td><span class="pill">Action</span></td><td>A button you press. Sends one MIDI message type.</td><td><span class="mono" style="color:var(--signal)">MIDI Note on a Play button</span></td></tr><tr><td><span class="pill">Connector</span></td><td>A slider or dial you drag. Sends continuous values.</td><td><span class="mono" style="color:var(--signal)">CC Fader bound to a volume slider</span></td></tr><tr><td><span class="pill teal">State</span></td><td>A live value Touch Portal remembers, shown on a button, gauge, or text field.</td><td><span class="chip">tx.cc.volume.value<button class="copy-btn" data-copy="tx.cc.volume.value" title="Copy">⧉</button></span></td></tr><tr><td><span class="pill teal">Event</span></td><td>A trigger that fires the instant something happens, for automation.</td><td><span class="chip">MIDI CC Sent<button class="copy-btn" data-copy="MIDI CC Sent" title="Copy">⧉</button></span></td></tr></table>
+
+<h2 class="h2">The relationship that makes this powerful</h2>
+<div class="diagram-wrap"><svg width="680" height="130" viewBox="0 0 680 130"><line x1="66.0" y1="65.0" x2="203.0" y2="65.0" stroke="var(--signal)" stroke-width="2.5" stroke-opacity="0.5"/><line x1="203.0" y1="65.0" x2="340.0" y2="65.0" stroke="var(--signal)" stroke-width="2.5" stroke-opacity="0.5"/><line x1="340.0" y1="65.0" x2="477.0" y2="65.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><line x1="477.0" y1="65.0" x2="614.0" y2="65.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><circle cx="66.0" cy="65.0" r="21" fill="var(--panel)" stroke="var(--signal)" stroke-width="3"/>
+          <circle cx="66.0" cy="65.0" r="6.72" fill="var(--signal)"/>
+          <text x="66.0" y="30.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">PRESS / MOVE</text><text x="66.0" y="108.0" class="mono-text dim-text" font-size="11" text-anchor="middle">you act</text><circle cx="203.0" cy="65.0" r="21" fill="var(--panel)" stroke="var(--signal)" stroke-width="3"/>
+          <circle cx="203.0" cy="65.0" r="6.72" fill="var(--signal)"/>
+          <text x="203.0" y="30.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">SEND</text><text x="203.0" y="108.0" class="mono-text dim-text" font-size="11" text-anchor="middle">real MIDI out</text><circle cx="340.0" cy="65.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="340.0" cy="65.0" r="6.72" fill="var(--trace)"/>
+          <text x="340.0" y="30.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">PUBLISH</text><text x="340.0" y="108.0" class="mono-text dim-text" font-size="11" text-anchor="middle">a live State</text><circle cx="477.0" cy="65.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="477.0" cy="65.0" r="6.72" fill="var(--trace)"/>
+          <text x="477.0" y="30.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">FIRE</text><text x="477.0" y="108.0" class="mono-text dim-text" font-size="11" text-anchor="middle">an Event</text><circle cx="614.0" cy="65.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="614.0" cy="65.0" r="6.72" fill="var(--trace)"/>
+          <text x="614.0" y="30.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">DISPLAY</text><text x="614.0" y="108.0" class="mono-text dim-text" font-size="11" text-anchor="middle">on any button</text></svg></div>
+
+<div class="callout warn">
+  <span class="lbl">This only happens if you name it</span>
+  The Publish → Fire → Display chain only runs for controls you've given a <b>Name</b>. Leave Name blank and the control still sends MIDI perfectly — it just won't create a state or fire an event.
+</div>
+</section>
+<section class="doc-section" id="midi-primer">
+<div class="eyebrow amber">Getting Started</div>
+<h1 class="page-h1">A Two-Minute MIDI Primer</h1>
+<p class="lead">Four terms come up everywhere in this plugin.</p>
+<div class="grid2">
+  <div class="card amber-edge"><div class="card-title">Channel <span class="tag">1–16</span></div><div class="card-sub">MIDI devices address 16 independent channels — like 16 separate radio frequencies. Most simple setups just use channel 1.</div></div>
+  <div class="card amber-edge"><div class="card-title">Note <span class="tag">0–127</span></div><div class="card-sub">Which musical note. 60 is Middle C — the pitch a piano key would generate.</div></div>
+</div>
+<div class="grid2">
+  <div class="card amber-edge"><div class="card-title">Velocity <span class="tag">0–127</span></div><div class="card-sub">How hard the note was hit. 127 = hardest. Velocity 0 usually means "note released" in disguise.</div></div>
+  <div class="card amber-edge"><div class="card-title">CC / Control Change <span class="tag">0–127 / 0–127</span></div><div class="card-sub">The general-purpose knob message. The CC number identifies <i>which</i> control (CC 7 = Volume, CC 10 = Pan by convention). The value is <i>how much</i>.</div></div>
+</div>
+<p class="dim">Everything else in MIDI Pro is built from these four ideas.</p>
+</section>
+<section class="doc-section" id="actions">
+<div class="eyebrow amber">Reference</div>
+<h1 class="page-h1">The Actions</h1>
+<p class="lead">Every action lives under the <b>MIDI Pro</b> category in Touch Portal's action list. Seven actions total.</p>
+
+<details class="adv" open>
+  <summary>Mode behavior — read this first (Midi Note &amp; CC share these six modes)</summary>
+  <div class="adv-body">
+    <p style="padding-top:14px">The names are not what you'd guess — "On/Off" is a one-shot pulse, "Momentary" is the true press-and-hold.</p>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+  <div style="font-family:'Space Grotesk';font-weight:600;font-size:14px;width:100px;flex-shrink:0;">On / Off</div>
+  <div style="font-size:13.5px;color:var(--ink-dim);flex:1;">Press fires ON <i>and</i> OFF immediately, back to back — a one-shot pulse. Use for drum hits, one-shot samples.</div>
+  <div><svg width="250" height="64" viewBox="0 0 250 64">
+      <line x1="20" y1="36" x2="230" y2="36" stroke="var(--border)" stroke-width="1"/>
+      <path d="M20,36 L62.0,36 L62.0,16 L70.4,16 L70.4,36 L230,36" fill="none" stroke="var(--signal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M57.0,44 L67.0,44 L62.0,52 Z" fill="var(--signal)"/><text x="62.0" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text><path d="M65.4,52 L75.4,52 L70.4,44 Z" fill="none" stroke="var(--trace)" stroke-width="1.6"/><text x="70.4" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle"></text></svg></div>
+</div><div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+  <div style="font-family:'Space Grotesk';font-weight:600;font-size:14px;width:100px;flex-shrink:0;">On only</div>
+  <div style="font-size:13.5px;color:var(--ink-dim);flex:1;">Press sends only the ON velocity. Nothing on release.</div>
+  <div><svg width="250" height="64" viewBox="0 0 250 64">
+      <line x1="20" y1="36" x2="230" y2="36" stroke="var(--border)" stroke-width="1"/>
+      <path d="M20,36 L62.0,36 L62.0,16 L230,16" fill="none" stroke="var(--signal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M57.0,44 L67.0,44 L62.0,52 Z" fill="var(--signal)"/><text x="62.0" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text></svg></div>
+</div><div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+  <div style="font-family:'Space Grotesk';font-weight:600;font-size:14px;width:100px;flex-shrink:0;">Off only</div>
+  <div style="font-size:13.5px;color:var(--ink-dim);flex:1;">Press sends only the OFF velocity.</div>
+  <div><svg width="250" height="64" viewBox="0 0 250 64">
+      <line x1="20" y1="36" x2="230" y2="36" stroke="var(--border)" stroke-width="1"/>
+      <path d="M20,36 L62.0,36 L62.0,36 L230,36" fill="none" stroke="var(--signal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M57.0,44 L67.0,44 L62.0,52 Z" fill="var(--signal)"/><text x="62.0" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text></svg></div>
+</div><div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+  <div style="font-family:'Space Grotesk';font-weight:600;font-size:14px;width:100px;flex-shrink:0;">Hold</div>
+  <div style="font-size:13.5px;color:var(--ink-dim);flex:1;">Press sends ON. Release does nothing — turn it off some other way.</div>
+  <div><svg width="250" height="64" viewBox="0 0 250 64">
+      <line x1="20" y1="36" x2="230" y2="36" stroke="var(--border)" stroke-width="1"/>
+      <path d="M20,36 L62.0,36 L62.0,16 L230,16" fill="none" stroke="var(--signal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M57.0,44 L67.0,44 L62.0,52 Z" fill="var(--signal)"/><text x="62.0" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text></svg></div>
+</div><div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+  <div style="font-family:'Space Grotesk';font-weight:600;font-size:14px;width:100px;flex-shrink:0;">Momentary</div>
+  <div style="font-size:13.5px;color:var(--ink-dim);flex:1;">Press sends ON, release sends OFF — a true held key, like a sustain pedal. What most people expect from “On/Off.”</div>
+  <div><svg width="250" height="64" viewBox="0 0 250 64">
+      <line x1="20" y1="36" x2="230" y2="36" stroke="var(--border)" stroke-width="1"/>
+      <path d="M20,36 L62.0,36 L62.0,16 L177.5,16 L177.5,36 L230,36" fill="none" stroke="var(--signal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M57.0,44 L67.0,44 L62.0,52 Z" fill="var(--signal)"/><text x="62.0" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text><path d="M172.5,52 L182.5,52 L177.5,44 Z" fill="none" stroke="var(--trace)" stroke-width="1.6"/><text x="177.5" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">RELEASE</text></svg></div>
+</div><div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+  <div style="font-family:'Space Grotesk';font-weight:600;font-size:14px;width:100px;flex-shrink:0;">Toggle</div>
+  <div style="font-size:13.5px;color:var(--ink-dim);flex:1;">Each press alternates ON → OFF → ON. Release is ignored. Good for mute buttons that stay lit.</div>
+  <div><svg width="250" height="64" viewBox="0 0 250 64">
+      <line x1="20" y1="36" x2="230" y2="36" stroke="var(--border)" stroke-width="1"/>
+      <path d="M20,36 L53.6,36 L53.6,16 L125.0,16 L125.0,36 L196.4,36 L196.4,16 L230,16" fill="none" stroke="var(--signal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M48.6,44 L58.6,44 L53.6,52 Z" fill="var(--signal)"/><text x="53.6" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text><path d="M120.0,44 L130.0,44 L125.0,52 Z" fill="var(--signal)"/><text x="125.0" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text><path d="M191.4,44 L201.4,44 L196.4,52 Z" fill="var(--signal)"/><text x="196.4" y="58" class="mono-text dim-text" font-size="10" text-anchor="middle">PRESS</text></svg></div>
+</div>
+    <div class="callout warn"><span class="lbl">The mode people actually want, most often</span>
+    "Hold the button down, it plays; let go, it stops" is <b>Momentary</b>, not "On / Off."</div>
+  </div>
+</details>
+
+<div class="card amber-edge"><div class="card-title">MIDI Note <span class="tag">NOTE ON / OFF</span></div>
+      <div class="card-sub">Sends a Note On / Note Off message — the message a piano key generates.</div><table class="ftable"><tr><td class="fname">Name</td><td>Optional. Fill in for live states/events.</td></tr><tr><td class="fname">Mode</td><td>On/Off · On only · Off only · Hold · Momentary · Toggle — see above.</td></tr><tr><td class="fname">Note</td><td>0–127. Which note. Middle C = 60.</td></tr><tr><td class="fname">Velocity On / Off</td><td>0–127 each. How hard the on/off hit is.</td></tr><tr><td class="fname">Ch</td><td>1–16. MIDI channel.</td></tr><tr><td class="fname">MIDI Out / In</td><td>Destination port; In optionally mirrors incoming for Toggle feedback.</td></tr></table></div>
+
+<div class="card amber-edge"><div class="card-title">Control Change (CC) <span class="tag">CONTROL CHANGE</span></div>
+      <div class="card-sub">The general-purpose knob message. Same shape as MIDI Note, for continuous parameters instead of notes.</div><table class="ftable"><tr><td class="fname">Name</td><td>Same as MIDI Note.</td></tr><tr><td class="fname">Mode</td><td>Identical six modes as MIDI Note.</td></tr><tr><td class="fname">CC#</td><td>0–127. Which control.</td></tr><tr><td class="fname">Value On / Off</td><td>0–127 values sent for the two states.</td></tr><tr><td class="fname">Ch</td><td>1–16.</td></tr><tr><td class="fname">Repeat Mode / Rate</td><td>Once, or Repeat While Held at 5–50 Hz — continuously re-sends Value On while the button is down.</td></tr></table></div>
+
+<div class="card amber-edge"><div class="card-title">CC Relative (CW/CCW) <span class="tag">ENCODER BUTTON</span></div>
+      <div class="card-sub">A button-based rotary encoder. Two completely independent packets — one for clockwise, one for counter-clockwise.</div><table class="ftable"><tr><td class="fname">Name</td><td>Names the encoder — CW and CCW share one live position.</td></tr><tr><td class="fname">CW CC# / Val / Ch</td><td>The exact CC sent when you press the button.</td></tr><tr><td class="fname">CCW CC# / Val / Ch</td><td>The exact CC sent when you release it.</td></tr><tr><td class="fname">Repeat / Rate</td><td>Once, or Repeat While Held — held repeats CW at Rate; release always fires CCW once.</td></tr></table></div>
+
+<div class="card amber-edge"><div class="card-title">Pitch Bend <span class="tag">PITCH WHEEL</span></div>
+      <div class="card-sub">Sends the 14-bit pitch wheel message.</div><table class="ftable"><tr><td class="fname">Name</td><td>Optional, for telemetry.</td></tr><tr><td class="fname">Mode</td><td>Fixed — press sends Value only. Return to Center — press sends Value, release snaps back to 8192.</td></tr><tr><td class="fname">Value</td><td>0–16383. 8192 = center/no bend.</td></tr><tr><td class="fname">Ch</td><td>1–16.</td></tr><tr><td class="fname">MIDI Out</td><td>Destination port.</td></tr></table></div>
+
+<div class="card amber-edge"><div class="card-title">Program Change <span class="tag">PATCH SWITCH</span></div>
+      <div class="card-sub">Switches a synth or instrument's patch/preset number.</div><table class="ftable"><tr><td class="fname">Name</td><td>Optional, for telemetry.</td></tr><tr><td class="fname">Mode</td><td>Fixed sends the exact Program every press. Increment/Decrement step ±1 from wherever it last landed — does not reset.</td></tr><tr><td class="fname">Program</td><td>0–127. Starting/fixed patch number.</td></tr><tr><td class="fname">Ch</td><td>1–16.</td></tr><tr><td class="fname">Rate</td><td>Repeat speed if held on Increment/Decrement.</td></tr></table></div>
+
+<div class="card panic-edge"><div class="card-title">Panic / All Notes Off <span class="tag">EMERGENCY STOP</span></div>
+  <div class="card-sub">Sends the MIDI "all notes off" broadcast so any stuck or hanging notes clear instantly — the fix for "my synth won't stop playing that one note."</div>
+  <table class="ftable"><tr><td class="fname">Channel</td><td>All, or a specific channel 1–16.</td></tr><tr><td class="fname">MIDI Out</td><td>Destination port.</td></tr></table>
+  <div class="callout warn" style="margin-top:12px;margin-bottom:0"><span class="lbl">Put one on every page</span>You will use it more than you expect.</div>
+</div>
+
+<p class="dim"><b>MIDI Learn</b> is not a sender — a diagnostic listener. Covered in full in <a href="#midi-learn">MIDI Learn</a>.</p>
+</section>
+<section class="doc-section" id="connectors">
+<div class="eyebrow teal">Reference</div>
+<h1 class="page-h1">The Connectors — Sliders &amp; Dials</h1>
+<p class="lead">You drag these instead of pressing them. Every connector comes in two visual flavors (Slider and Dial) that behave identically — pick whichever fits your layout.</p>
+
+<div class="card teal-edge"><div class="card-title">CC Fader / Rotary Dial <span class="tag">SLIDER + DIAL</span></div>
+      <div class="card-sub">The main way to control a continuous parameter — volume, filter cutoff, pan.</div><table class="ftable"><tr><td class="fname">Mode</td><td>Absolute — position maps directly to a 0–127 CC value. Relative (3 variants) — acts as an endless encoder, sending ticks instead.</td></tr><tr><td class="fname">CC# / Ch</td><td>Standard CC target.</td></tr><tr><td class="fname">Sensitivity</td><td>Slow→Fast. Relative mode only — how fast ticks accelerate away from center.</td></tr><tr><td class="fname">CZ (Center Zone)</td><td>Dead band around center where nothing is sent. Relative mode only.</td></tr></table></div>
+
+<div class="card teal-edge"><div class="card-title">CC Comp / Rotary CC Comp <span class="tag">SLIDER + DIAL</span></div>
+      <div class="card-sub">For when “up” and “down” need to be two genuinely different messages, not just ±1 of the same one.</div><table class="ftable"><tr><td class="fname">Up/Down CC#, Ch, Val, Sens</td><td>Fully independent packets for each direction.</td></tr><tr><td class="fname">CZ</td><td>Dead band around center, shared by both directions.</td></tr><tr><td class="fname">DZ (Dead Zone)</td><td>Extra hysteresis buffer — stops jitter at the boundary from double-firing.</td></tr></table></div>
+
+<div class="grid2">
+  <div><div class="card teal-edge"><div class="card-title">Pitch Bend Slider / Dial <span class="tag">BOTH</span></div>
+      <div class="card-sub">A fader that continuously controls pitch bend instead of a CC. Center = no bend (8192).</div><table class="ftable"><tr><td class="fname">Name / Ch</td><td>The only two fields you'll touch beyond ports.</td></tr></table></div></div>
+  <div><div class="card teal-edge"><div class="card-title">Program Change Slider / Dial <span class="tag">BOTH</span></div>
+      <div class="card-sub">Drag across 0–100% and land on a specific patch number (0–127) — a quick patch browser.</div><table class="ftable"><tr><td class="fname">Name / Ch</td><td>The only two fields you'll touch beyond ports.</td></tr></table></div></div>
+</div>
+
+<div class="callout">
+  <span class="lbl">Which mode should you pick?</span>
+  If your DAW's fader jumps to match your slider position exactly — use <b>Absolute</b>. If it's an "infinite rotary" knob that only understands relative nudges — use a <b>Relative</b> variant (Binary Offset is the most universally supported; try that first).
+</div>
+</section>
+<section class="doc-section" id="which-control">
+<div class="eyebrow amber">Reference</div>
+<h1 class="page-h1">Which Control Should I Use?</h1>
+<table class="reftable"><tr><th>I want to…</th><th>Use this</th></tr><tr><td>Trigger a one-shot sample / drum hit</td><td><span class="mono" style="color:var(--trace)">MIDI Note, Mode = On / Off</span></td></tr><tr><td>Hold a note while a button is pressed</td><td><span class="mono" style="color:var(--trace)">MIDI Note, Mode = Momentary</span></td></tr><tr><td>A mute button that stays lit</td><td><span class="mono" style="color:var(--trace)">MIDI Note or CC, Mode = Toggle</span></td></tr><tr><td>A volume fader</td><td><span class="mono" style="color:var(--trace)">CC Fader connector, Mode = Absolute</span></td></tr><tr><td>An endless-rotation encoder knob</td><td><span class="mono" style="color:var(--trace)">CC Fader (Relative), or CC Relative action</span></td></tr><tr><td>Nudge a value while holding a button</td><td><span class="mono" style="color:var(--trace)">CC action, Repeat While Held</span></td></tr><tr><td>A pitch wheel with spring-back</td><td><span class="mono" style="color:var(--trace)">Pitch Bend, Mode = Return to Center</span></td></tr><tr><td>Browse through synth patches</td><td><span class="mono" style="color:var(--trace)">Program Change, Increment/Decrement</span></td></tr><tr><td>Everything just stopped working</td><td><span class="mono" style="color:var(--trace)">Panic / All Notes Off</span></td></tr><tr><td>What does my controller actually send?</td><td><span class="mono" style="color:var(--trace)">MIDI Learn</span></td></tr></table>
+</section>
+<section class="doc-section" id="midi-learn">
+<div class="eyebrow teal">MIDI Learn</div>
+<h1 class="page-h1">MIDI Learn — Diagnose Anything</h1>
+<p class="lead">Solves the single most common beginner problem: <i>"I don't know what my controller actually sends."</i> Not a sender — a diagnostic listener.</p>
+<div class="diagram-wrap"><svg width="600" height="110" viewBox="0 0 600 110"><line x1="66.0" y1="55.0" x2="222.0" y2="55.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><line x1="222.0" y1="55.0" x2="378.0" y2="55.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><line x1="378.0" y1="55.0" x2="534.0" y2="55.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><circle cx="66.0" cy="55.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="66.0" cy="55.0" r="6.72" fill="var(--trace)"/>
+          <text x="66.0" y="20.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">PRESS LEARN</text><circle cx="222.0" cy="55.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="222.0" cy="55.0" r="6.72" fill="var(--trace)"/>
+          <text x="222.0" y="20.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">PLAY A NOTE</text><text x="222.0" y="98.0" class="mono-text dim-text" font-size="11" text-anchor="middle">on your gear</text><circle cx="378.0" cy="55.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="378.0" cy="55.0" r="6.72" fill="var(--trace)"/>
+          <text x="378.0" y="20.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">CAPTURED</text><text x="378.0" y="98.0" class="mono-text dim-text" font-size="11" text-anchor="middle">instantly</text><circle cx="534.0" cy="55.0" r="21" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="534.0" cy="55.0" r="6.72" fill="var(--trace)"/>
+          <text x="534.0" y="20.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">READ STATES</text><text x="534.0" y="98.0" class="mono-text dim-text" font-size="11" text-anchor="middle">see below</text></svg></div>
+
+<h2 class="h2">How to use it</h2>
+<div class="steps">
+  <div class="step"><div class="num"></div><div class="txt">Drag <b>MIDI Learn</b> onto a button.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Set <b>MIDI In</b> to the port your hardware or DAW is connected through.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Press the button, then immediately play a note or move a knob on your real gear.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">MIDI Pro captures the very next message and publishes it to the states below.</div></div>
+</div>
+
+<h2 class="h2">What you get back</h2>
+<table class="reftable"><tr><th>State</th><th>Example value</th></tr><tr><td><span class="chip">state.learn.display<button class="copy-btn" data-copy="state.learn.display" title="Copy">⧉</button></span></td><td>NOTE Ch1 N60 Vel127 — compact, perfect for a button label</td></tr><tr><td><span class="chip">state.learn.summary<button class="copy-btn" data-copy="state.learn.summary" title="Copy">⧉</button></span></td><td>Multi-line: Device, Type, Channel, Note/CC/Program, Velocity/Value, raw hex bytes</td></tr><tr><td><span class="chip">state.learn.device<button class="copy-btn" data-copy="state.learn.device" title="Copy">⧉</button></span></td><td>X-Touch Mini — which port it came from</td></tr><tr><td><span class="chip">state.learn.timestamp<button class="copy-btn" data-copy="state.learn.timestamp" title="Copy">⧉</button></span></td><td>2026-07-04 14:32:07 — proves the capture is fresh</td></tr><tr><td><span class="chip">.type / .channel / .control / .value / .raw<button class="copy-btn" data-copy=".type / .channel / .control / .value / .raw" title="Copy">⧉</button></span></td><td>The individual pieces, for your own display</td></tr></table>
+
+<div class="callout">
+  <span class="lbl">Real use case</span>
+  A friend hands you an unlabeled controller. Put MIDI Learn on a button, show <span class="chip">state.learn.summary<button class="copy-btn" data-copy="state.learn.summary" title="Copy">⧉</button></span> on a second button (see <a href="#telemetry-display">Showing a State On Screen</a>), and press every knob and pad once. Complete device map in five minutes.
+</div>
+</section>
+<section class="doc-section" id="telemetry-states">
+<div class="eyebrow teal">Runtime Telemetry</div>
+<h1 class="page-h1">Runtime Telemetry — Persistent States</h1>
+<p class="lead">MIDI Pro's signature feature: Touch Portal can show you, live, what was just sent — without your DAW or hardware sending anything back.</p>
+
+<div class="callout warn">
+  <span class="lbl">It only works if you fill in Name</span>
+  Name a control "Volume" and press/move it once, and MIDI Pro creates a small set of live states under that name automatically. Leave Name blank and nothing is created.
+</div>
+
+<h2 class="h2">The states you get, per control type</h2>
+<table class="reftable"><tr><th>You named a…</th><th>Primary state</th><th>Range</th><th>Also get</th></tr><tr><td>MIDI Note “Play”</td><td><span class="chip">tx.note.play.state<button class="copy-btn" data-copy="tx.note.play.state" title="Copy">⧉</button></span></td><td>on/off</td><td><span class="chip">tx.note.play.velocity<button class="copy-btn" data-copy="tx.note.play.velocity" title="Copy">⧉</button></span></td></tr><tr><td>CC / CC Fader “Volume”</td><td><span class="chip">tx.cc.volume.value<button class="copy-btn" data-copy="tx.cc.volume.value" title="Copy">⧉</button></span></td><td>0–127</td><td><span class="chip">tx.cc.volume.state<button class="copy-btn" data-copy="tx.cc.volume.state" title="Copy">⧉</button></span> (≥64)</td></tr><tr><td>Pitch Bend “Expression”</td><td><span class="chip">tx.pb.expression.value<button class="copy-btn" data-copy="tx.pb.expression.value" title="Copy">⧉</button></span></td><td>0–16383</td><td><span class="chip">tx.pb.expression.pct<button class="copy-btn" data-copy="tx.pb.expression.pct" title="Copy">⧉</button></span> (−100…+100)</td></tr><tr><td>Program Change “Patch”</td><td><span class="chip">tx.pc.patch.program<button class="copy-btn" data-copy="tx.pc.patch.program" title="Copy">⧉</button></span></td><td>0–127</td><td>—</td></tr><tr><td>CC Relative/Comp “Jog”</td><td><span class="chip">tx.dial.jog.value<button class="copy-btn" data-copy="tx.dial.jog.value" title="Copy">⧉</button></span></td><td>0–127, running</td><td><span class="chip">tx.dial.jog.direction<button class="copy-btn" data-copy="tx.dial.jog.direction" title="Copy">⧉</button></span></td></tr></table>
+<p class="dim">Every one of these also gets a <span class="mono">.time</span> companion showing exactly when it last fired (HH:MM:SS).</p>
+
+<div class="callout">
+  <span class="lbl">Shared position</span>
+  Name a connector the same as a button action — both called "Jog" — and they share the exact same live position. Turning a button and dragging a slider both called "Jog" moves one single number, not two.
+</div>
+</section>
+<section class="doc-section" id="telemetry-display">
+<div class="eyebrow teal">Runtime Telemetry</div>
+<h1 class="page-h1">Making a State Show Up on Screen</h1>
+<p class="lead">Read this carefully — it's the step beginners most often skip. <b>Naming a control and pressing it does not automatically make its value appear anywhere.</b> MIDI Pro only creates the state in the background. You still have to tell a specific button, on a specific event, to display it.</p>
+
+<div class="card teal-edge">
+  <div class="card-title">Touch Portal's native action: <span class="mono" style="color:var(--trace)">Update Button text…</span></div>
+  <div class="card-sub">Lives specifically under a button's <b>On Event</b> tab — not On Press.</div>
+  <div class="steps">
+    <div class="step"><div class="num"></div><div class="txt">Press/move your named control once first, so its state exists.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Edit the button where the value should <i>appear</i> — same button or a different one.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Switch to that button's <b>On Event</b> tab.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Add Touch Portal's built-in <b>Update Button text…</b> action.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Use the variable picker to insert your state — listed under <b>MIDI Pro</b> by the exact name you typed.</div></div>
+  </div>
+</div>
+
+<div class="callout">
+  <span class="lbl">The easy shortcut</span>
+  Touch Portal has a built-in periodic refresh event (~500ms) that re-evaluates a button's text on its own, with no MIDI Pro event needed. Attach your state variable to that instead for a live number that "just works."
+</div>
+
+<div class="callout warn">
+  <span class="lbl">Sliders can't display their own feedback</span>
+  Touch Portal connectors (sliders/dials) have no On Event tab of their own — they're input-only widgets. The display always has to live on a separate button, text, or gauge element next to the slider, never the slider itself.
+</div>
+</section>
+<section class="doc-section" id="telemetry-events">
+<div class="eyebrow teal">Runtime Telemetry</div>
+<h1 class="page-h1">TX Events — For Automation, Not Display</h1>
+<p class="lead">One momentary trigger per MIDI type. Use these in Touch Portal's On Event system to make things happen automatically — switch a page, fire a notification, run another action — the instant any named control transmits.</p>
+
+<table class="reftable"><tr><th>Event</th><th>Fires when</th></tr><tr><td>MIDI Note Sent</td><td>Any named Note action sends</td></tr><tr><td>MIDI CC Sent</td><td>Any named CC action or CC-type connector sends</td></tr><tr><td>MIDI Pitch Bend Sent</td><td>Any named Pitch Bend action or slider/dial sends</td></tr><tr><td>MIDI Program Change Sent</td><td>Any named Program Change action or slider/dial sends</td></tr><tr><td>MIDI Dial Changed</td><td>Any named CC Relative action or Comp connector ticks</td></tr></table>
+
+<h2 class="h2">Shared context — tx.last.*</h2>
+<table class="reftable"><tr><th>State</th><th>Meaning</th></tr><tr><td><span class="chip">tx.last.name<button class="copy-btn" data-copy="tx.last.name" title="Copy">⧉</button></span></td><td>Which control just fired, e.g. Volume</td></tr><tr><td><span class="chip">tx.last.type<button class="copy-btn" data-copy="tx.last.type" title="Copy">⧉</button></span></td><td>Note / CC / Pitch Bend / Program Change / Dial</td></tr><tr><td><span class="chip">tx.last.value<button class="copy-btn" data-copy="tx.last.value" title="Copy">⧉</button></span></td><td>What it sent</td></tr><tr><td><span class="chip">tx.last.port<button class="copy-btn" data-copy="tx.last.port" title="Copy">⧉</button></span></td><td>Which MIDI port</td></tr><tr><td><span class="chip">tx.last.channel<button class="copy-btn" data-copy="tx.last.channel" title="Copy">⧉</button></span></td><td>Which channel</td></tr></table>
+
+<div class="callout warn">
+  <span class="lbl">Do not use tx.last.* for display</span>
+  The next transmission from <i>any</i> control overwrites it. Built for the split second an event handler reads it — not for long-term display. For display, always use the per-name states instead.
+</div>
+</section>
+<section class="doc-section" id="states-vs-events">
+<div class="eyebrow teal">Runtime Telemetry</div>
+<h1 class="page-h1">Runtime States vs. TX Events</h1>
+<p class="lead">These solve two different problems. Once the distinction clicks, the rest of this plugin gets much easier to reason about.</p>
+
+<div class="diagram-wrap"><svg width="680" height="210" viewBox="0 0 680 210"><line x1="70" y1="105.0" x2="450" y2="70.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><line x1="70" y1="105.0" x2="450" y2="140.0" stroke="var(--trace)" stroke-width="2.5" stroke-opacity="0.5"/><circle cx="70" cy="105.0" r="22" fill="var(--panel)" stroke="var(--signal)" stroke-width="3"/>
+      <circle cx="70" cy="105.0" r="7.04" fill="var(--signal)"/>
+      <text x="70" y="69.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="middle">SEND MIDI</text><circle cx="450" cy="70.0" r="19" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="450" cy="70.0" r="6.08" fill="var(--trace)"/>
+          <text x="485" y="60.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="start">RUNTIME STATES</text>
+          <text x="485" y="78.0" class="mono-text dim-text" font-size="12" text-anchor="start">Specific UI</text>
+          <text x="485" y="95.0" class="mono-text" font-size="11" fill="var(--trace)" text-anchor="start">Button · Gauge · LED · Text</text><circle cx="450" cy="140.0" r="19" fill="var(--panel)" stroke="var(--trace)" stroke-width="3"/>
+          <circle cx="450" cy="140.0" r="6.08" fill="var(--trace)"/>
+          <text x="485" y="130.0" font-family="Space Grotesk" font-weight="600" font-size="15" text-anchor="start">TX EVENTS</text>
+          <text x="485" y="148.0" class="mono-text dim-text" font-size="12" text-anchor="start">Generic Automation</text>
+          <text x="485" y="165.0" class="mono-text" font-size="11" fill="var(--trace)" text-anchor="start">tx.last.* · Notifications · Logs</text></svg></div>
+
+<table class="reftable"><tr><th></th><th>Runtime States</th><th>TX Events</th></tr><tr><td>Use when</td><td>You already know the specific control</td><td>You want to react to <i>any</i> transmission of that type</td></tr><tr><td>Reads</td><td><span class="chip">tx.note.play.state<button class="copy-btn" data-copy="tx.note.play.state" title="Copy">⧉</button></span><br><span class="chip">tx.cc.volume.value<button class="copy-btn" data-copy="tx.cc.volume.value" title="Copy">⧉</button></span></td><td><span class="chip">tx.last.name<button class="copy-btn" data-copy="tx.last.name" title="Copy">⧉</button></span> / .type / .value</td></tr><tr><td>Good for</td><td>Button icons, LEDs, gauges, text, progress bars</td><td>Notifications, logging, macros, generic workflows</td></tr><tr><td>Setup</td><td>Bind display element directly to the state</td><td>Attach to one of the five events, branch on tx.last.*</td></tr></table>
+
+<div class="callout">
+  <span class="lbl">Why both exist</span>
+  Runtime States are for UI — no plugin Event required, this is the whole reason the TX Runtime State Publisher exists. TX Events are for automation — one generic handler that reacts to anything of a given type without knowing in advance which named control fired. Two different responsibilities, cleanly separated.
+</div>
+</section>
+<section class="doc-section" id="scenarios"><div class="eyebrow amber">Guides</div><h1 class="page-h1">Real-World Scenarios</h1><div class="card amber-edge" style="display:flex;gap:18px;">
+      <div class="scenario-num">01</div>
+      <div style="flex:1"><div class="card-title">The Live Performer — A Volume Fader That Shows Itself</div><div class="card-sub">Confirm your master volume fader actually moved, without staring at your DAW.</div>
+      <div class="steps"><div class="step"><div class="num"></div><div class="txt">Drag a <b>CC Fader</b> connector, Mode = Absolute, CC# = 7 (MIDI standard Volume), Name = <span class="chip amber">Master<button class="copy-btn" data-copy="Master" title="Copy">⧉</button></span>.</div></div><div class="step"><div class="num"></div><div class="txt">On a nearby button's On Event tab, add <b>Update Button text…</b> pointed at <span class="chip">tx.cc.master.value<button class="copy-btn" data-copy="tx.cc.master.value" title="Copy">⧉</button></span>.</div></div><div class="step"><div class="num"></div><div class="txt">Every drag of the fader updates the readout — zero extra wiring in your DAW.</div></div></div></div></div><div class="card amber-edge" style="display:flex;gap:18px;">
+      <div class="scenario-num">02</div>
+      <div style="flex:1"><div class="card-title">The Sample Trigger Wall</div><div class="card-sub">Eight buttons, each firing a different one-shot sample.</div>
+      <div class="steps"><div class="step"><div class="num"></div><div class="txt">Eight <b>MIDI Note</b> actions, Mode = On/Off (one-shot pulse), one Note number per button (60, 62, 64…), same channel.</div></div><div class="step"><div class="num"></div><div class="txt">Map those note numbers in your sampler/DAW to eight sounds.</div></div><div class="step"><div class="num"></div><div class="txt">Optional: name each and add <b>Update Button text…</b> → <span class="chip">tx.last.name<button class="copy-btn" data-copy="tx.last.name" title="Copy">⧉</button></span> on a shared indicator for an "on air" readout.</div></div></div></div></div><div class="card amber-edge" style="display:flex;gap:18px;">
+      <div class="scenario-num">03</div>
+      <div style="flex:1"><div class="card-title">The Synth Patch Browser</div><div class="card-sub">Two buttons — Next / Previous Patch — walking through 128 presets.</div>
+      <div class="steps"><div class="step"><div class="num"></div><div class="txt">One <b>Program Change</b> action, Mode = Increment (+1 on Hold), Name = <span class="chip amber">Patch<button class="copy-btn" data-copy="Patch" title="Copy">⧉</button></span>.</div></div><div class="step"><div class="num"></div><div class="txt">A second, Mode = Decrement (-1 on Hold), same Name (they share the live position).</div></div><div class="step"><div class="num"></div><div class="txt">On a display button's On Event tab, add <b>Update Button text…</b> → <span class="chip">tx.pc.patch.program<button class="copy-btn" data-copy="tx.pc.patch.program" title="Copy">⧉</button></span>.</div></div></div></div></div><div class="card amber-edge" style="display:flex;gap:18px;">
+      <div class="scenario-num">04</div>
+      <div style="flex:1"><div class="card-title">The Expression Pedal Replacement</div><div class="card-sub">No real expression pedal, but your patch has a filter sweep on CC 74.</div>
+      <div class="steps"><div class="step"><div class="num"></div><div class="txt"><b>CC Fader</b> connector, Absolute mode, CC# = 74, Name = <span class="chip amber">Filter<button class="copy-btn" data-copy="Filter" title="Copy">⧉</button></span>.</div></div><div class="step"><div class="num"></div><div class="txt">On a gauge widget's On Event tab, add <b>Update Button text…</b> → <span class="chip">tx.cc.filter.value<button class="copy-btn" data-copy="tx.cc.filter.value" title="Copy">⧉</button></span>.</div></div></div></div></div><div class="card amber-edge" style="display:flex;gap:18px;">
+      <div class="scenario-num">05</div>
+      <div style="flex:1"><div class="card-title">The DJ-Style Filter Knob</div><div class="card-sub">An endless rotary feel using two adjacent buttons instead of a touch slider.</div>
+      <div class="steps"><div class="step"><div class="num"></div><div class="txt"><b>CC Relative (CW/CCW)</b> action, CW/CCW Val set to your DAW's relative-CC mapping (Binary Offset's 65/63 is most common), Name = <span class="chip amber">Jog<button class="copy-btn" data-copy="Jog" title="Copy">⧉</button></span>.</div></div><div class="step"><div class="num"></div><div class="txt">On a display element's On Event tab, add <b>Update Button text…</b> → <span class="chip">tx.dial.jog.value<button class="copy-btn" data-copy="tx.dial.jog.value" title="Copy">⧉</button></span> for a live visual as you spin it.</div></div></div></div></div></section>
+<section class="doc-section" id="quick-reference">
+<div class="eyebrow teal">Reference</div>
+<h1 class="page-h1">Quick Reference</h1>
+
+<h2 class="h2">All seven actions</h2>
+<table class="reftable"><tr><th>Action</th><th>Sends</th><th>Has Hold?</th></tr><tr><td>MIDI Note</td><td>Note On/Off</td><td>Yes</td></tr><tr><td>Control Change (CC)</td><td>CC</td><td>Yes</td></tr><tr><td>CC Relative (CW/CCW)</td><td>Two independent CC packets</td><td>Yes</td></tr><tr><td>Pitch Bend</td><td>Pitch Bend</td><td>Yes</td></tr><tr><td>Program Change</td><td>Program Change</td><td>Yes</td></tr><tr><td>Panic / All Notes Off</td><td>All Notes Off broadcast</td><td>Yes</td></tr><tr><td>MIDI Learn</td><td><i>listens, doesn't send</i></td><td>No</td></tr></table>
+
+<h2 class="h2">All eight connectors</h2>
+<table class="reftable"><tr><th>Connector</th><th>Widget</th><th>Sends</th></tr><tr><td>CC Fader</td><td>Slider</td><td>CC (Absolute or Relative)</td></tr><tr><td>Rotary Dial</td><td>Dial</td><td>CC (Absolute or Relative)</td></tr><tr><td>CC Comp</td><td>Slider</td><td>CC (independent Up/Down)</td></tr><tr><td>Rotary CC Comp</td><td>Dial</td><td>CC (independent CW/CCW)</td></tr><tr><td>Pitch Bend Slider / Dial</td><td>Both</td><td>Pitch Bend</td></tr><tr><td>Program Change Slider / Dial</td><td>Both</td><td>Program Change</td></tr></table>
+
+<h2 class="h2">Every telemetry state, by prefix</h2>
+<p><span class="chip amber">tx.note.&lt;name&gt;.*<button class="copy-btn" data-copy="tx.note.&lt;name&gt;.*" title="Copy">⧉</button></span><span class="chip amber">tx.cc.&lt;name&gt;.*<button class="copy-btn" data-copy="tx.cc.&lt;name&gt;.*" title="Copy">⧉</button></span><span class="chip amber">tx.pb.&lt;name&gt;.*<button class="copy-btn" data-copy="tx.pb.&lt;name&gt;.*" title="Copy">⧉</button></span>
+<span class="chip amber">tx.pc.&lt;name&gt;.*<button class="copy-btn" data-copy="tx.pc.&lt;name&gt;.*" title="Copy">⧉</button></span><span class="chip amber">tx.dial.&lt;name&gt;.*<button class="copy-btn" data-copy="tx.dial.&lt;name&gt;.*" title="Copy">⧉</button></span><span class="chip">tx.last.*<button class="copy-btn" data-copy="tx.last.*" title="Copy">⧉</button></span><span class="chip">state.learn.*<button class="copy-btn" data-copy="state.learn.*" title="Copy">⧉</button></span></p>
+</section>
+<section class="doc-section" id="troubleshooting"><div class="eyebrow teal">Support</div><h1 class="page-h1">Troubleshooting</h1><div class="card"><div class="card-title" style="font-size:15px">I named my control, pressed it, but nowhere shows the value.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Expected — naming only creates the state in the background. Add Touch Portal's Update Button text… action under some button's On Event tab and point it at that state yourself.</div></div><div class="card"><div class="card-title" style="font-size:15px">A MIDI In or MIDI Out dropdown is empty.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Make sure the device is connected (or your virtual port app is running) before opening the action's settings, then reopen it.</div></div><div class="card"><div class="card-title" style="font-size:15px">I pressed a named button but its state never showed up in the state picker.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">States are created the first time a named control actually fires — press or move it at least once first.</div></div><div class="card"><div class="card-title" style="font-size:15px">My Toggle button doesn't seem to alternate correctly.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Toggle mode ignores button release entirely — only presses count. Make sure you're releasing between presses.</div></div><div class="card"><div class="card-title" style="font-size:15px">Nothing happens when I press a button at all.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Check that MIDI Out is actually set — an unset port silently does nothing rather than erroring, by design.</div></div><div class="card"><div class="card-title" style="font-size:15px">Values seem “off by one direction.”</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">For CC Relative / CC Comp, check which value your DAW expects for increase vs decrease. Use MIDI Learn on a working relative knob to see the exact byte pattern, then match it.</div></div></section><footer class="doc-footer"><span>MIDI PRO DOCUMENTATION</span><span>com.printerlight.midipro</span></footer>
+    </div>
+  </main>
+</div>
+
+<script>window.MP_SEARCH_INDEX = [{"id": "quick-start", "title": "Quick Start", "cat": "Getting Started", "keywords": "Quick Start"}, {"id": "core-concepts", "title": "Core Concepts", "cat": "Getting Started", "keywords": "Core Concepts"}, {"id": "midi-primer", "title": "MIDI Primer", "cat": "Getting Started", "keywords": "MIDI Primer"}, {"id": "actions", "title": "The Actions", "cat": "Reference", "keywords": "The Actions"}, {"id": "connectors", "title": "The Connectors", "cat": "Reference", "keywords": "The Connectors"}, {"id": "which-control", "title": "Which Control Should I Use?", "cat": "Reference", "keywords": "Which Control Should I Use?"}, {"id": "midi-learn", "title": "Diagnose Anything", "cat": "MIDI Learn", "keywords": "Diagnose Anything"}, {"id": "telemetry-states", "title": "Persistent States", "cat": "Runtime Telemetry", "keywords": "Persistent States"}, {"id": "telemetry-display", "title": "Showing a State On Screen", "cat": "Runtime Telemetry", "keywords": "Showing a State On Screen"}, {"id": "telemetry-events", "title": "TX Events", "cat": "Runtime Telemetry", "keywords": "TX Events"}, {"id": "states-vs-events", "title": "States vs. Events", "cat": "Runtime Telemetry", "keywords": "States vs. Events"}, {"id": "scenarios", "title": "Real-World Scenarios", "cat": "Guides", "keywords": "Real-World Scenarios"}, {"id": "quick-reference", "title": "Quick Reference", "cat": "Reference", "keywords": "Quick Reference"}, {"id": "troubleshooting", "title": "Troubleshooting", "cat": "Support", "keywords": "Troubleshooting"}];</script>
+<script>
+/* ---------- Theme toggle (in-memory only; defaults to system preference) ---------- */
+(function() {
+  var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  var current = prefersLight ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', current);
+  var btn = document.getElementById('theme-toggle');
+  function render() { btn.textContent = current === 'dark' ? '🌙' : '☀️'; }
+  render();
+  btn.addEventListener('click', function() {
+    current = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', current);
+    render();
+  });
+})();
+
+/* ---------- Mobile sidebar ---------- */
+(function() {
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebar-overlay');
+  var burger = document.getElementById('hamburger');
+  function open() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function close() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  burger.addEventListener('click', function() {
+    sidebar.classList.contains('open') ? close() : open();
+  });
+  overlay.addEventListener('click', close);
+  sidebar.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', close); });
+})();
+
+/* ---------- Copy to clipboard ---------- */
+function mpCopy(btn, text) {
+  navigator.clipboard.writeText(text).then(function() {
+    var orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = '✓';
+    setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1200);
+  });
+}
+document.addEventListener('click', function(e) {
+  var t = e.target.closest('[data-copy]');
+  if (t) mpCopy(t, t.getAttribute('data-copy'));
+});
+
+/* ---------- Scrollspy: highlight active sidebar link ---------- */
+(function() {
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.doc-section[id]'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  function onScroll() {
+    var y = window.scrollY + 100;
+    var activeId = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= y) activeId = sections[i].id;
+    }
+    links.forEach(function(l) {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + activeId);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ---------- Search ---------- */
+(function() {
+  var index = window.MP_SEARCH_INDEX || [];
+  var input = document.getElementById('search-input');
+  var results = document.getElementById('search-results');
+  function render(matches) {
+    if (!matches.length) { results.style.display = 'none'; results.innerHTML=''; return; }
+    results.innerHTML = matches.slice(0, 8).map(function(m) {
+      return '<a href="#' + m.id + '"><span class="sr-cat">' + m.cat + '</span>' + m.title + '</a>';
+    }).join('');
+    results.style.display = 'block';
+  }
+  input.addEventListener('input', function() {
+    var q = input.value.trim().toLowerCase();
+    if (!q) { render([]); return; }
+    var matches = index.filter(function(item) {
+      return item.title.toLowerCase().indexOf(q) !== -1 || (item.keywords && item.keywords.toLowerCase().indexOf(q) !== -1);
+    });
+    render(matches);
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.searchbox')) { results.style.display = 'none'; }
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); }
+    if (e.key === 'Escape') { input.blur(); results.style.display = 'none'; }
+  });
+})();
+</script>
+</body>
+</html>
