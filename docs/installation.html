@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Installation — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="installation">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="eyebrow amber">Getting Started</div>
+<h1 class="page-h1">Installation</h1>
+<p class="lead">MIDI Pro is distributed as a Touch Portal plugin package (<span class="mono">.tpp</span>).</p>
+
+<h2 class="h2" style="border-top:none">Windows</h2>
+<div class="steps">
+  <div class="step"><div class="num"></div><div class="txt">Download <span class="mono">com.printerlight.midipro_RC1_WINDOWS.tpp</span> from the release page.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">In Touch Portal, go to Settings → Import plug-in…</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Select the downloaded <span class="mono">.tpp</span> file.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Restart Touch Portal if prompted. MIDI Pro appears under Plug-ins.</div></div>
+</div>
+
+<div class="callout warn">
+  <span class="lbl">Upgrading from a pre-release build?</span>
+  If you have an earlier build installed under the old plugin identity (<span class="mono">com.sfx.midipro</span>), remove it first from Settings → Plug-ins. Because the identity changed, this is treated as a fresh install, and any pages built against the old identity will need their actions re-added.
+</div>
+
+<h2 class="h2">macOS &amp; Linux</h2>
+<p>Native builds are in development — see <a href="index.html#platform-support">Platform Support</a> on the home page for current status. The underlying application code is already platform-aware; what remains is producing and verifying signed, tested binaries for each platform.</p>
+
+<h2 class="h2">Virtual MIDI Ports (optional, recommended for testing)</h2>
+<p>If you don't have MIDI hardware yet, a free virtual MIDI cable lets you test everything on one machine:</p>
+<table class="reftable"><tr><th>Platform</th><th>Tool</th></tr><tr><td>Windows</td><td><a href="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank" rel="noopener">loopMIDI</a> (free, third-party)</td></tr><tr><td>macOS</td><td>Built-in — Audio MIDI Setup → Window → Show MIDI Studio → IAC Driver → enable it</td></tr></table>
+
+<h2 class="h2">Verifying it works</h2>
+<p>Add a <b>MIDI Note</b> action to a button, set MIDI Out to your virtual port or device, and press it. If your DAW (or a MIDI monitor tool) shows the note arriving, installation is complete.</p>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

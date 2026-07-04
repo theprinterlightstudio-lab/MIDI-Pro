@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDI Learn — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="midi-learn">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="eyebrow teal">MIDI Learn</div>
+<h1 class="page-h1">MIDI Learn — Diagnose Anything</h1>
+<p class="lead">Solves the single most common beginner problem: <i>"I don't know what my controller actually sends."</i> Not a sender — a diagnostic listener.</p>
+
+<h2 class="h2" style="border-top:none">How to use it</h2>
+<div class="steps">
+  <div class="step"><div class="num"></div><div class="txt">Drag <b>MIDI Learn</b> onto a button.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Set <b>MIDI In</b> to the port your hardware or DAW is connected through.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Press the button, then immediately play a note or move a knob on your real gear.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">MIDI Pro captures the very next message and publishes it to the states below.</div></div>
+</div>
+
+<h2 class="h2">What you get back</h2>
+<table class="reftable"><tr><th>State</th><th>Example value</th></tr><tr><td><span class="chip">state.learn.display<button class="copy-btn" data-copy="state.learn.display" title="Copy">⧉</button></span></td><td>NOTE Ch1 N60 Vel127 — compact, perfect for a button label</td></tr><tr><td><span class="chip">state.learn.summary<button class="copy-btn" data-copy="state.learn.summary" title="Copy">⧉</button></span></td><td>Multi-line: Device, Type, Channel, Note/CC/Program, Velocity/Value, raw hex bytes</td></tr><tr><td><span class="chip">state.learn.device<button class="copy-btn" data-copy="state.learn.device" title="Copy">⧉</button></span></td><td>X-Touch Mini — which port it came from</td></tr><tr><td><span class="chip">state.learn.timestamp<button class="copy-btn" data-copy="state.learn.timestamp" title="Copy">⧉</button></span></td><td>2026-07-04 14:32:07 — proves the capture is fresh</td></tr><tr><td><span class="chip">.type / .channel / .control / .value / .raw<button class="copy-btn" data-copy=".type / .channel / .control / .value / .raw" title="Copy">⧉</button></span></td><td>The individual pieces, for your own display</td></tr></table>
+
+<h2 class="h2">Example Workflow</h2>
+<p>A friend hands you an unlabeled controller:</p>
+<div class="steps">
+  <div class="step"><div class="num"></div><div class="txt">Put MIDI Learn on a button, MIDI In set to the controller's port.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">On a second button's On Event tab, add <b>Update Button text…</b> pointed at <span class="chip">state.learn.summary<button class="copy-btn" data-copy="state.learn.summary" title="Copy">⧉</button></span>.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Press Learn, then press every knob and pad on the controller once.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Read the summary after each press — complete device map in five minutes.</div></div>
+</div>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Troubleshooting — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="troubleshooting">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      <div class="eyebrow teal">Support</div><h1 class="page-h1">Troubleshooting</h1><h2 class="h2">Installation</h2><div class="card"><div class="card-title" style="font-size:16.5px">The plugin doesn't appear after import.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Restart Touch Portal completely after importing. If it still doesn't appear, confirm you're importing a .tpp file, not a renamed .zip.</div></div><div class="card"><div class="card-title" style="font-size:16.5px">I have an old pre-release version installed too.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Remove com.sfx.midipro (the old identity) from Settings → Plug-ins before installing this build — they're treated as separate plugins.</div></div><h2 class="h2">MIDI Devices</h2><div class="card"><div class="card-title" style="font-size:16.5px">A MIDI In or MIDI Out dropdown is empty.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Make sure the device is connected (or your virtual port app is running) before opening the action's settings, then reopen it.</div></div><div class="card"><div class="card-title" style="font-size:16.5px">Values seem “off by one direction.”</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">For CC Relative / CC Comp, check which value your DAW expects for increase vs decrease. Use MIDI Learn on a working relative knob to see the exact byte pattern.</div></div><h2 class="h2">Ports</h2><div class="card"><div class="card-title" style="font-size:16.5px">Nothing happens when I press a button at all.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Check that MIDI Out is actually set — an unset port silently does nothing rather than erroring, by design.</div></div><h2 class="h2">Permissions</h2><div class="card"><div class="card-title" style="font-size:16.5px">Another application seems to be blocking my device.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Many MIDI devices only allow one exclusive connection at a time. Close other software (DAWs, other controller utilities) that might already have the port open.</div></div><h2 class="h2">Touch Portal</h2><div class="card"><div class="card-title" style="font-size:16.5px">I named a control, pressed it, but nowhere shows the value.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Expected — naming only creates the state in the background. Add Update Button text… under some button's On Event tab and point it at that state yourself.</div></div><div class="card"><div class="card-title" style="font-size:16.5px">My Toggle button doesn't seem to alternate correctly.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">Toggle mode ignores button release entirely — only presses count. Make sure you're releasing between presses.</div></div><h2 class="h2">Windows</h2><div class="card"><div class="card-title" style="font-size:16.5px">Windows SmartScreen warns about the executable.</div><div class="card-sub" style="margin-bottom:0;color:var(--ink)">This is standard for smaller-distribution Windows binaries without an EV code-signing certificate. Click “More info” → “Run anyway” if you trust the source you downloaded it from.</div></div>
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

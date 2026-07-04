@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runtime Telemetry — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="runtime-telemetry">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="eyebrow teal">Reference</div>
+<h1 class="page-h1">Runtime Telemetry</h1>
+<p class="lead">MIDI Pro's signature feature: Touch Portal can show you, live, what was just sent — without your DAW or hardware sending anything back.</p>
+
+<div class="callout warn">
+  <span class="lbl">It only works if you fill in Name</span>
+  Name a control "Volume" and press/move it once, and MIDI Pro creates a small set of live states under that name automatically. Leave Name blank and nothing is created.
+</div>
+
+<h2 class="h2" style="border-top:none">Persistent States</h2>
+<p>One set per named control — this is what you bind dashboards, gauges, icons, and text to.</p>
+<table class="reftable"><tr><th>You named a…</th><th>Primary state</th><th>Range</th><th>Also get</th></tr><tr><td>MIDI Note “Play”</td><td><span class="chip">tx.note.play.state<button class="copy-btn" data-copy="tx.note.play.state" title="Copy">⧉</button></span></td><td>on/off</td><td><span class="chip">tx.note.play.velocity<button class="copy-btn" data-copy="tx.note.play.velocity" title="Copy">⧉</button></span></td></tr><tr><td>CC / CC Fader “Volume”</td><td><span class="chip">tx.cc.volume.value<button class="copy-btn" data-copy="tx.cc.volume.value" title="Copy">⧉</button></span></td><td>0–127</td><td><span class="chip">tx.cc.volume.state<button class="copy-btn" data-copy="tx.cc.volume.state" title="Copy">⧉</button></span> (≥64)</td></tr><tr><td>Pitch Bend “Expression”</td><td><span class="chip">tx.pb.expression.value<button class="copy-btn" data-copy="tx.pb.expression.value" title="Copy">⧉</button></span></td><td>0–16383</td><td><span class="chip">tx.pb.expression.pct<button class="copy-btn" data-copy="tx.pb.expression.pct" title="Copy">⧉</button></span> (−100…+100)</td></tr><tr><td>Program Change “Patch”</td><td><span class="chip">tx.pc.patch.program<button class="copy-btn" data-copy="tx.pc.patch.program" title="Copy">⧉</button></span></td><td>0–127</td><td>—</td></tr><tr><td>CC Relative/Comp “Jog”</td><td><span class="chip">tx.dial.jog.value<button class="copy-btn" data-copy="tx.dial.jog.value" title="Copy">⧉</button></span></td><td>0–127, running</td><td><span class="chip">tx.dial.jog.direction<button class="copy-btn" data-copy="tx.dial.jog.direction" title="Copy">⧉</button></span></td></tr></table>
+<p class="dim">Every one of these also gets a <span class="mono">.time</span> companion showing exactly when it last fired (HH:MM:SS).</p>
+
+<div class="callout">
+  <span class="lbl">Shared position</span>
+  Name a connector the same as a button action — both called "Jog" — and they share the exact same live position.
+</div>
+
+<h2 class="h2">Making a State Show Up on Screen</h2>
+<p><b>Naming a control and pressing it does not automatically make its value appear anywhere.</b> You still have to tell a specific button, on a specific event, to display it.</p>
+<div class="card teal-edge">
+  <div class="card-title">Touch Portal's native action: <span class="mono">Update Button text…</span></div>
+  <div class="card-sub">Lives specifically under a button's <b>On Event</b> tab — not On Press.</div>
+  <div class="steps">
+    <div class="step"><div class="num"></div><div class="txt">Press/move your named control once first, so its state exists.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Edit the button where the value should appear — same button or a different one.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Switch to that button's <b>On Event</b> tab, add <b>Update Button text…</b>.</div></div>
+    <div class="step"><div class="num"></div><div class="txt">Use the variable picker to insert your state, listed under <b>MIDI Pro</b>.</div></div>
+  </div>
+</div>
+<div class="callout warn"><span class="lbl">Sliders can't display their own feedback</span>
+Touch Portal connectors have no On Event tab of their own. The display always lives on a separate button, text, or gauge element.</div>
+
+<h2 class="h2" id="events">TX Events</h2>
+<p>One momentary trigger per MIDI type, for automation that needs to react to <i>any</i> transmission of a given kind without knowing in advance which named control fired.</p>
+<table class="reftable"><tr><th>Event</th><th>Fires when</th></tr><tr><td>MIDI Note Sent</td><td>Any named Note action sends</td></tr><tr><td>MIDI CC Sent</td><td>Any named CC action or CC-type connector sends</td></tr><tr><td>MIDI Pitch Bend Sent</td><td>Any named Pitch Bend action or slider/dial sends</td></tr><tr><td>MIDI Program Change Sent</td><td>Any named Program Change action or slider/dial sends</td></tr><tr><td>MIDI Dial Changed</td><td>Any named CC Relative action or Comp connector ticks</td></tr></table>
+
+<h3 class="h3">Shared context — tx.last.*</h3>
+<table class="reftable"><tr><th>State</th><th>Meaning</th></tr><tr><td><span class="chip">tx.last.name<button class="copy-btn" data-copy="tx.last.name" title="Copy">⧉</button></span></td><td>Which control just fired, e.g. Volume</td></tr><tr><td><span class="chip">tx.last.type<button class="copy-btn" data-copy="tx.last.type" title="Copy">⧉</button></span></td><td>Note / CC / Pitch Bend / Program Change / Dial</td></tr><tr><td><span class="chip">tx.last.value<button class="copy-btn" data-copy="tx.last.value" title="Copy">⧉</button></span></td><td>What it sent</td></tr><tr><td><span class="chip">tx.last.port<button class="copy-btn" data-copy="tx.last.port" title="Copy">⧉</button></span></td><td>Which MIDI port</td></tr><tr><td><span class="chip">tx.last.channel<button class="copy-btn" data-copy="tx.last.channel" title="Copy">⧉</button></span></td><td>Which channel</td></tr><tr><td><span class="chip">tx.last.note<button class="copy-btn" data-copy="tx.last.note" title="Copy">⧉</button></span> / <span class="chip">tx.last.velocity<button class="copy-btn" data-copy="tx.last.velocity" title="Copy">⧉</button></span> / <span class="chip">tx.last.state<button class="copy-btn" data-copy="tx.last.state" title="Copy">⧉</button></span></td><td>Note-specific context</td></tr><tr><td><span class="chip">tx.last.cc<button class="copy-btn" data-copy="tx.last.cc" title="Copy">⧉</button></span></td><td>CC-specific context</td></tr><tr><td><span class="chip">tx.last.program<button class="copy-btn" data-copy="tx.last.program" title="Copy">⧉</button></span></td><td>Program Change-specific context</td></tr><tr><td><span class="chip">tx.last.pitchbend<button class="copy-btn" data-copy="tx.last.pitchbend" title="Copy">⧉</button></span></td><td>Pitch Bend-specific context</td></tr><tr><td><span class="chip">tx.last.direction<button class="copy-btn" data-copy="tx.last.direction" title="Copy">⧉</button></span></td><td>Dial-specific context</td></tr></table>
+<div class="callout warn"><span class="lbl">Do not use tx.last.* for display</span>
+The next transmission from any control overwrites it. For display, always use the per-name persistent states above instead.</div>
+
+<h3 class="h3">Runtime States vs. TX Events — which do I use?</h3>
+<table class="reftable"><tr><th></th><th>Runtime States</th><th>TX Events</th></tr><tr><td>Use when</td><td>You already know the specific control</td><td>React to any transmission of that type</td></tr><tr><td>Good for</td><td>Button icons, LEDs, gauges, progress bars</td><td>Notifications, logging, macros</td></tr></table>
+
+<h2 class="h2" id="transport-states">Transport Feedback States</h2>
+<p>A separate, passive feature: 8 read-only states that reflect incoming Mackie Control Universal (MCU) style transport LED messages. This is <b>not</b> tied to Name/TX telemetry, and there's no action to trigger these yourself — they only change when a DAW sends the corresponding MCU note to a MIDI input port MIDI Pro is listening on.</p>
+<table class="reftable"><tr><th>State</th><th>MCU Note</th></tr><tr><td><span class="chip">state.transport.play<button class="copy-btn" data-copy="state.transport.play" title="Copy">⧉</button></span></td><td>94 (0x5E)</td></tr><tr><td><span class="chip">state.transport.stop<button class="copy-btn" data-copy="state.transport.stop" title="Copy">⧉</button></span></td><td>93 (0x5D)</td></tr><tr><td><span class="chip">state.transport.record<button class="copy-btn" data-copy="state.transport.record" title="Copy">⧉</button></span></td><td>95 (0x5F)</td></tr><tr><td><span class="chip">state.transport.pause<button class="copy-btn" data-copy="state.transport.pause" title="Copy">⧉</button></span></td><td>synthesized, not a native MCU note</td></tr><tr><td><span class="chip">state.transport.loop<button class="copy-btn" data-copy="state.transport.loop" title="Copy">⧉</button></span></td><td>86 (0x56)</td></tr><tr><td><span class="chip">state.transport.click<button class="copy-btn" data-copy="state.transport.click" title="Copy">⧉</button></span></td><td>89 (0x59)</td></tr><tr><td><span class="chip">state.transport.punchin<button class="copy-btn" data-copy="state.transport.punchin" title="Copy">⧉</button></span></td><td>87 (0x57)</td></tr><tr><td><span class="chip">state.transport.punchout<button class="copy-btn" data-copy="state.transport.punchout" title="Copy">⧉</button></span></td><td>88 (0x58)</td></tr></table>
+<p class="dim">"Pause" isn't a native MCU button — MIDI Pro synthesizes it when both Play and Stop report OFF shortly after Play was last ON, matching typical DAW UI behavior.</p>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Touch Connectors — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="connectors">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="eyebrow teal">Reference</div>
+<h1 class="page-h1">Touch Connectors</h1>
+<p class="lead">Sliders and dials you drag instead of pressing. Every connector comes in two visual flavors (Slider and Dial) that behave identically — pick whichever fits your layout.</p>
+
+<h2 class="h2" style="border-top:none">CC Fader / Rotary Dial</h2>
+<div class="card teal-edge"><div class="card-title">CC Fader / Rotary Dial <span class="tag">SLIDER + DIAL</span></div>
+      <div class="card-sub">The main way to control a continuous parameter — volume, filter cutoff, pan.</div><table class="ftable"><tr><td class="fname">Mode</td><td>Absolute — position maps directly to a 0–127 CC value. Relative (3 variants) — acts as an endless encoder, sending ticks instead.</td></tr><tr><td class="fname">CC# / Ch</td><td>Standard CC target.</td></tr><tr><td class="fname">Sensitivity</td><td>Slow→Fast. Relative mode only — how fast ticks accelerate away from center.</td></tr><tr><td class="fname">CZ (Center Zone)</td><td>Dead band around center where nothing is sent. Relative mode only.</td></tr></table></div>
+
+<h2 class="h2">CC Comp / Rotary CC Comp</h2>
+<div class="card teal-edge"><div class="card-title">CC Comp / Rotary CC Comp <span class="tag">SLIDER + DIAL</span></div>
+      <div class="card-sub">For when “up” and “down” need to be two genuinely different messages, not just ±1 of the same one.</div><table class="ftable"><tr><td class="fname">Up/Down CC#, Ch, Val, Sens</td><td>Fully independent packets for each direction.</td></tr><tr><td class="fname">CZ</td><td>Dead band around center, shared by both directions.</td></tr><tr><td class="fname">DZ (Dead Zone)</td><td>Extra hysteresis buffer — stops jitter at the boundary from double-firing.</td></tr></table></div>
+
+<h2 class="h2">Pitch Bend Slider / Dial</h2>
+<div class="card teal-edge"><div class="card-title">Pitch Bend Slider / Dial <span class="tag">BOTH</span></div>
+      <div class="card-sub">A fader that continuously controls pitch bend instead of a CC. Center = no bend (8192).</div><table class="ftable"><tr><td class="fname">Name / Ch</td><td>The only two fields you'll touch beyond ports.</td></tr></table></div>
+
+<h2 class="h2">Program Change Slider / Dial</h2>
+<div class="card teal-edge"><div class="card-title">Program Change Slider / Dial <span class="tag">BOTH</span></div>
+      <div class="card-sub">Drag across 0–100% and land on a specific patch number (0–127) — a quick patch browser.</div><table class="ftable"><tr><td class="fname">Name / Ch</td><td>The only two fields you'll touch beyond ports.</td></tr></table></div>
+
+<h2 class="h2">Touch Interactions</h2>
+<p>All connectors respond to standard drag gestures on touchscreens and with a mouse identically — Touch Portal handles the input abstraction. Relative-mode connectors specifically care about <i>distance from center</i>, not absolute position, so the same physical drag produces the same tick rate whether you're using a phone, tablet, or Stream Deck+-style dial.</p>
+
+<div class="callout">
+  <span class="lbl">Which mode should you pick?</span>
+  If your DAW's fader jumps to match your slider position exactly — use <b>Absolute</b>. If it's an "infinite rotary" knob that only understands relative nudges — use a <b>Relative</b> variant (Binary Offset is the most universally supported; try that first).
+</div>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

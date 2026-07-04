@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="getting-started">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="eyebrow amber">Getting Started</div>
+<h1 class="page-h1">Absolute Beginner Quick Start</h1>
+<p class="lead">Zero experience with Touch Portal? This gets you to a working test in three steps.</p>
+
+<h2 class="h2" style="border-top:none">What this plugin actually does</h2>
+<p>MIDI Pro turns Touch Portal buttons, sliders, and dials into a MIDI controller. Press a button, and it sends a real MIDI message to your DAW, synth, or any MIDI-listening software. It can also <b>listen</b> to MIDI coming in, and — its signature feature — automatically show you what was just sent, without needing your gear to echo anything back.</p>
+
+<div class="callout">
+  <span class="lbl">No hardware? No problem</span>
+  Install a free virtual MIDI cable: <b>loopMIDI</b> on Windows, or the built-in <b>IAC Driver</b> on macOS. See <a href="installation.html">Installation</a> for details.
+</div>
+
+<h2 class="h2">Your first action, in five steps</h2>
+<div class="steps">
+  <div class="step"><div class="num"></div><div class="txt">Open a Touch Portal page and click a button to edit it.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">In the Actions list, open the <b>MIDI Pro</b> category.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Drag <b>MIDI Note</b> onto the button.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Set <b>MIDI Out</b> to your virtual port or real device.</div></div>
+  <div class="step"><div class="num"></div><div class="txt">Press the button. If your DAW is listening on that port, a note comes in.</div></div>
+</div>
+
+<h2 class="h2">Core Concepts</h2>
+<p>Four building blocks worth understanding before anything else:</p>
+<table class="reftable"><tr><th>Concept</th><th>What it is</th><th>Example</th></tr><tr><td><span class="pill">Action</span></td><td>A button you press. Sends one MIDI message type.</td><td><span class="mono">MIDI Note on a Play button</span></td></tr><tr><td><span class="pill">Connector</span></td><td>A slider or dial you drag. Sends continuous values.</td><td><span class="mono">CC Fader bound to a volume slider</span></td></tr><tr><td><span class="pill teal">State</span></td><td>A live value Touch Portal remembers.</td><td><span class="chip">tx.cc.volume.value<button class="copy-btn" data-copy="tx.cc.volume.value" title="Copy">⧉</button></span></td></tr><tr><td><span class="pill teal">Event</span></td><td>A trigger that fires the instant something happens.</td><td><span class="chip">MIDI CC Sent<button class="copy-btn" data-copy="MIDI CC Sent" title="Copy">⧉</button></span></td></tr></table>
+<div class="callout warn">
+  <span class="lbl">This only happens if you name it</span>
+  States and events only exist for controls you've given a <b>Name</b>. Leave it blank and the control still sends MIDI perfectly — it just publishes nothing.
+</div>
+
+<h2 class="h2">Where to go next</h2>
+<p>Try <a href="midi-learn.html">MIDI Learn</a> to see exactly what your gear sends, or jump straight to <a href="actions.html">MIDI Actions</a> for the full field reference.</p>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

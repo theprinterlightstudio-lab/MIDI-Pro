@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="index">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="hero">
+  <img src="images/Hero_icon.png" class="icon" alt="MIDI Pro">
+  <h1>MIDI <span class="pro">Pro</span></h1>
+  <p class="lead" style="margin-left:auto;margin-right:auto">Bidirectional MIDI control for Touch Portal — send notes, CC, pitch bend and
+  program changes, then watch every transmission come alive on screen through live runtime telemetry.</p>
+  <div class="hero-ctas">
+    <a class="btn primary" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1 (Windows)</a>
+    <a class="btn" href="MIDI_Pro_Guide_Light.pdf">📖 User Guide (PDF)</a>
+    <a class="btn" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn teal" href="https://ko-fi.com/printerlight" target="_blank" rel="noopener">☕ Ko-fi</a>
+    <a class="btn teal" href="https://paypal.me/printerlight" target="_blank" rel="noopener">💛 PayPal</a>
+  </div>
+</div>
+
+<h2 class="h2" style="border-top:none">Features</h2>
+<div class="grid3">
+  <div class="feature-card"><div class="fi">🎹</div><h3>Seven Send Actions</h3><p>Note, CC, CC Relative, Pitch Bend, Program Change, Panic, and MIDI Learn.</p></div>
+  <div class="feature-card"><div class="fi">🎚️</div><h3>Eight Connectors</h3><p>Sliders and dials with independent up/down packet assignment and full sensitivity control.</p></div>
+  <div class="feature-card"><div class="fi">📡</div><h3>Runtime Telemetry</h3><p>Every named control publishes live states the instant it transmits — no external feedback loop.</p></div>
+  <div class="feature-card"><div class="fi">🔍</div><h3>MIDI Learn</h3><p>Full diagnostic breakdown of any incoming message — type, value, raw hex, device, timestamp.</p></div>
+  <div class="feature-card"><div class="fi">⚡</div><h3>TX Events</h3><p>Five generic automation triggers, one per MIDI protocol, for workflows that react to anything.</p></div>
+  <div class="feature-card"><div class="fi">🚨</div><h3>Panic Button</h3><p>Emergency All Notes Off, one tap away, on every page you build.</p></div>
+</div>
+
+<h2 class="h2">Platform Support</h2>
+<div class="platform-row">
+  <div class="platform-badge ok">🪟 Windows<div class="status">Supported</div></div>
+  <div class="platform-badge wip">🍎 macOS<div class="status">In Development</div></div>
+  <div class="platform-badge wip">🐧 Linux<div class="status">Planned</div></div>
+</div>
+
+<h2 class="h2">Roadmap</h2>
+<div class="callout">
+  <span class="lbl">RC1 — Current</span>
+  Feature frozen. Public action, connector, state, and event IDs will not change except for bug fixes.
+</div>
+<div class="callout warn">
+  <span class="lbl">RC2 — Planned</span>
+  Translator, Input Bindings, RX Runtime States, and expanded automation workflows.
+</div>
+
+<h2 class="h2">Support Development</h2>
+<img src="images/Donation_box.png" alt="Support MIDI Pro on Ko-fi" style="border-radius:12px;">
+<p style="margin-top:14px">Prefer PayPal instead? <a href="https://paypal.me/printerlight" target="_blank" rel="noopener">paypal.me/printerlight</a></p>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>

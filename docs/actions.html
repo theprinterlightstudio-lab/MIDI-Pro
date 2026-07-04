@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDI Actions — MIDI Pro Docs</title>
+<link rel="icon" href="images/Hero_icon.png">
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body data-page="actions">
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="index.html" style="color:inherit"><img src="images/Hero_icon.png" alt="MIDI Pro">MIDI <span class="pro">Pro</span><span class="full-tag dim" style="font-weight:400;color:var(--ink-faint);font-size:14px;margin-left:2px;">Docs</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link hide-mobile" href="https://github.com/theprinterlightstudio-lab/MIDI-Pro" target="_blank" rel="noopener">GitHub</a>
+    <a class="topbar-link cta" href="com.printerlight.midipro_RC1_WINDOWS.tpp">⬇ Download RC1</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group"><div class="nav-group-title">Getting Started</div><a class="nav-link" data-page="index" href="index.html">Home</a><a class="nav-link" data-page="getting-started" href="getting-started.html">Getting Started</a><a class="nav-link" data-page="installation" href="installation.html">Installation</a></div><div class="nav-group"><div class="nav-group-title">Reference</div><a class="nav-link" data-page="actions" href="actions.html">MIDI Actions</a><a class="nav-link" data-page="connectors" href="connectors.html">Touch Connectors</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html">Runtime Telemetry</a><a class="nav-link" data-page="runtime-telemetry" href="runtime-telemetry.html#events">TX Events</a><a class="nav-link" data-page="midi-learn" href="midi-learn.html">MIDI Learn</a></div><div class="nav-group"><div class="nav-group-title">Support</div><a class="nav-link" data-page="faq" href="faq.html">FAQ</a><a class="nav-link" data-page="troubleshooting" href="troubleshooting.html">Troubleshooting</a></div>
+  </nav>
+  <main class="content">
+    <div class="content-inner">
+      
+<div class="eyebrow amber">Reference</div>
+<h1 class="page-h1">MIDI Actions</h1>
+<p class="lead">MIDI Pro ships <b>seven</b> actions under the MIDI Pro category in Touch Portal's action list. There is no separate "Transport" send action — see the callout near the bottom of this page for what MIDI Pro actually offers for transport, which is a different (and passive) kind of feature.</p>
+
+<details class="adv" open>
+  <summary>Mode behavior — read this first (MIDI Note &amp; CC share these six modes)</summary>
+  <div class="adv-body">
+    <p style="padding-top:14px">The names are not what you'd guess — "On/Off" is a one-shot pulse, "Momentary" is the true press-and-hold.</p>
+    <table class="reftable"><tr><th>Mode</th><th>Behavior</th></tr><tr><td>On / Off</td><td>Press fires ON <i>and</i> OFF immediately, back to back — a one-shot pulse. Use for drum hits, one-shot samples.</td></tr><tr><td>On only</td><td>Press sends only the ON velocity. Nothing on release.</td></tr><tr><td>Off only</td><td>Press sends only the OFF velocity.</td></tr><tr><td>Hold</td><td>Press sends ON. Release does nothing — turn it off some other way.</td></tr><tr><td>Momentary</td><td>Press sends ON, release sends OFF — a true held key, like a sustain pedal. What most people expect from “On/Off.”</td></tr><tr><td>Toggle</td><td>Each press alternates ON → OFF → ON. Release is ignored. Good for mute buttons that stay lit.</td></tr></table>
+    <div class="callout warn"><span class="lbl">The mode people actually want, most often</span>
+    "Hold the button down, it plays; let go, it stops" is <b>Momentary</b>, not "On / Off."</div>
+  </div>
+</details>
+
+<h2 class="h2">MIDI Note</h2>
+<div class="card amber-edge"><div class="card-title">MIDI Note <span class="tag">NOTE ON / OFF</span></div>
+      <div class="card-sub">Sends a Note On / Note Off message — the message a piano key generates.</div><table class="ftable"><tr><td class="fname">Name</td><td>Optional. Fill in for live states/events — see Runtime Telemetry.</td></tr><tr><td class="fname">Mode</td><td>On/Off · On only · Off only · Hold · Momentary · Toggle — see above.</td></tr><tr><td class="fname">Note</td><td>0–127. Which note. Middle C = 60.</td></tr><tr><td class="fname">Velocity On / Off</td><td>0–127 each. How hard the on/off hit is.</td></tr><tr><td class="fname">Ch</td><td>1–16. MIDI channel.</td></tr><tr><td class="fname">MIDI Out / In</td><td>Destination port; In optionally mirrors incoming for Toggle feedback.</td></tr></table></div>
+<p><b>Best practice:</b> use <b>Momentary</b> for anything that should stop when released (sustained notes), and <b>On/Off</b> for one-shot triggers (samples, drum hits).</p>
+
+<h2 class="h2">Control Change (CC)</h2>
+<div class="card amber-edge"><div class="card-title">Control Change (CC) <span class="tag">CONTROL CHANGE</span></div>
+      <div class="card-sub">The general-purpose knob message. Same shape as MIDI Note, for continuous parameters instead of notes.</div><table class="ftable"><tr><td class="fname">Name</td><td>Same as MIDI Note.</td></tr><tr><td class="fname">Mode</td><td>Identical six modes as MIDI Note.</td></tr><tr><td class="fname">CC#</td><td>0–127. Which control.</td></tr><tr><td class="fname">Value On / Off</td><td>0–127 values sent for the two states.</td></tr><tr><td class="fname">Ch</td><td>1–16.</td></tr><tr><td class="fname">Repeat Mode / Rate</td><td>Once, or Repeat While Held at 5–50 Hz — continuously re-sends Value On while the button is down.</td></tr></table></div>
+<p><b>Best practice:</b> Repeat While Held is ideal for "nudge this fader up while I hold the button" workflows in DAWs that support incremental CC nudges.</p>
+
+<h2 class="h2">CC Relative (CW/CCW)</h2>
+<div class="card amber-edge"><div class="card-title">CC Relative (CW/CCW) <span class="tag">ENCODER BUTTON</span></div>
+      <div class="card-sub">A button-based rotary encoder. Two completely independent packets — one for clockwise, one for counter-clockwise.</div><table class="ftable"><tr><td class="fname">Name</td><td>Names the encoder — CW and CCW share one live position.</td></tr><tr><td class="fname">CW CC# / Val / Ch</td><td>The exact CC sent when you press the button.</td></tr><tr><td class="fname">CCW CC# / Val / Ch</td><td>The exact CC sent when you release it.</td></tr><tr><td class="fname">Repeat / Rate</td><td>Once, or Repeat While Held — held repeats CW at Rate; release always fires CCW once.</td></tr></table></div>
+<p><b>Best practice:</b> check your DAW's relative-CC mapping docs before picking values — Binary Offset's 65 (CW) / 63 (CCW) pair is the most universally supported starting point.</p>
+
+<h2 class="h2">Pitch Bend</h2>
+<div class="card amber-edge"><div class="card-title">Pitch Bend <span class="tag">PITCH WHEEL</span></div>
+      <div class="card-sub">Sends the 14-bit pitch wheel message.</div><table class="ftable"><tr><td class="fname">Name</td><td>Optional, for telemetry.</td></tr><tr><td class="fname">Mode</td><td>Fixed — press sends Value only. Return to Center — press sends Value, release snaps back to 8192.</td></tr><tr><td class="fname">Value</td><td>0–16383. 8192 = center/no bend.</td></tr><tr><td class="fname">Ch</td><td>1–16.</td></tr><tr><td class="fname">MIDI Out</td><td>Destination port.</td></tr></table></div>
+<p><b>Best practice:</b> use <b>Return to Center</b> for a spring-loaded pitch-bend feel from an ordinary button.</p>
+
+<h2 class="h2">Program Change</h2>
+<div class="card amber-edge"><div class="card-title">Program Change <span class="tag">PATCH SWITCH</span></div>
+      <div class="card-sub">Switches a synth or instrument's patch/preset number.</div><table class="ftable"><tr><td class="fname">Name</td><td>Optional, for telemetry.</td></tr><tr><td class="fname">Mode</td><td>Fixed sends the exact Program every press. Increment/Decrement step ±1 from wherever it last landed — does not reset.</td></tr><tr><td class="fname">Program</td><td>0–127. Starting/fixed patch number.</td></tr><tr><td class="fname">Ch</td><td>1–16.</td></tr><tr><td class="fname">Rate</td><td>Repeat speed if held on Increment/Decrement.</td></tr></table></div>
+<p><b>Best practice:</b> pair one Increment and one Decrement action with the same Name to build a two-button patch browser — see Runtime Telemetry for how to display the current patch number.</p>
+
+<h2 class="h2">Panic / All Notes Off</h2>
+<div class="card panic-edge"><div class="card-title">Panic / All Notes Off <span class="tag">EMERGENCY STOP</span></div>
+  <div class="card-sub">Sends the MIDI "all notes off" broadcast so any stuck or hanging notes clear instantly.</div>
+  <table class="ftable"><tr><td class="fname">Channel</td><td>All, or a specific channel 1–16.</td></tr><tr><td class="fname">MIDI Out</td><td>Destination port.</td></tr></table>
+</div>
+<p><b>Best practice:</b> put one on every page. You will use it more than you expect.</p>
+
+<h2 class="h2">MIDI Learn</h2>
+<p>Not a sender — a diagnostic listener. See the dedicated <a href="midi-learn.html">MIDI Learn</a> page.</p>
+
+<h2 class="h2" id="transport-feedback">A note on "Transport"</h2>
+<div class="callout warn">
+  <span class="lbl">This is not a send action</span>
+  MIDI Pro has no button you press to control DAW transport. What it does
+  have is <b>passive transport feedback</b>: 8 read-only states
+  (<span class="mono">state.transport.play/stop/record/pause/loop/click/punchin/punchout</span>)
+  that light up automatically when your DAW sends Mackie Control Universal
+  (MCU) style transport LED messages to a MIDI input port MIDI Pro is
+  listening on. If your DAW doesn't speak MCU on that port, these states
+  simply never change — there's no action to trigger them yourself.
+</div>
+
+      <footer class="pfoot">
+        <span>MIDI PRO DOCUMENTATION</span>
+        <span><a href="mailto:theprinterlightstudio@gmail.com" style="color:inherit">theprinterlightstudio@gmail.com</a></span>
+        <span>com.printerlight.midipro</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="js/navigation.js"></script>
+</body>
+</html>
