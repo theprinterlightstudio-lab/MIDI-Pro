@@ -1,11 +1,73 @@
 <p align="center">
   <img src="images/hero_banner.png" alt="MIDI Pro Banner" width="100%">
 </p>
+
+<p align="center">
+
+<a href="./com.printerlight.midipro_RC1_WINDOWS.tpp">
+<img src="https://img.shields.io/badge/⬇%20Download-RC1%20Windows-orange?style=for-the-badge" alt="Download RC1">
+</a>
+
+&nbsp;
+
+<a href="https://ko-fi.com/printerlight">
+<img src="https://img.shields.io/badge/❤️%20Support-Ko--fi-FF5E5B?style=for-the-badge" alt="Support on Ko-fi">
+</a>
+
+&nbsp;
+
+<a href="https://paypal.me/printerlight">
+<img src="https://img.shields.io/badge/💛%20Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Donate via PayPal">
+</a>
+
+</p>
+
+# 🎹 MIDI Pro
+
+### Professional MIDI Integration for Touch Portal
+
+**MIDI Pro** is a professional Touch Portal plugin that brings advanced MIDI control, live runtime telemetry, touch connectors, and MIDI Learn to your favorite DAWs, synthesizers, MIDI controllers, lighting systems, and external hardware.
+
 ---
 
-# ❤️ Support MIDI Pro
+## 📥 Current Release
 
-If MIDI Pro has improved your workflow and you'd like to support future development, consider supporting the project.
+**Version:** RC1 (Windows)
+
+The current release supports **Microsoft Windows**.
+
+Native support for **macOS** and **Linux** is currently under development.
+
+| Platform | Status |
+|-----------|--------|
+| 🪟 Windows | ✅ RC1 Supported |
+| 🍎 macOS | 🚧 In Development |
+| 🐧 Linux | 🚧 Planned |
+
+---
+
+## 📦 Download
+
+➡️ **[Download MIDI Pro RC1 (.tpp)](./com.printerlight.midipro_RC1_WINDOWS.tpp)**
+<a href="https://github.com/theprinterlightstudio-lab/MIDI-Pro/releases/latest">
+
+The latest package includes:
+
+- ✅ MIDI Pro Touch Portal Plugin (.tpp)
+- ✅ Windows Host Application
+- ✅ Interactive HTML Documentation
+- ✅ PDF User Guide (Dark Edition)
+- ✅ PDF User Guide (Light Edition)
+- ✅ Marketplace Assets
+- 🚧 Official Touch Portal Profiles (Coming Soon)
+
+---
+
+## ❤️ Support MIDI Pro
+
+MIDI Pro is free to use.
+
+If MIDI Pro has improved your workflow and you'd like to support future development, you can support the project using one of the following methods.
 
 <p align="center">
 
@@ -21,55 +83,22 @@ If MIDI Pro has improved your workflow and you'd like to support future developm
 
 </p>
 
-📧 **Support & Contact**
+### 📧 Support & Contact
 
 **theprinterlightstudio@gmail.com**
 
-Every contribution is greatly appreciated. ❤️
+Your support helps fund:
 
-# 🎹 MIDI Pro
-
-### Professional MIDI Integration for Touch Portal
-
-**MIDI Pro** is a professional Touch Portal plugin that brings advanced MIDI control, live runtime telemetry, touch connectors, and MIDI Learn to your favorite DAWs, synthesizers, MIDI controllers, and external hardware.
-
----
-
-## 📥 Download RC1
-
-> **Latest Windows Release**
-
-➡️ **[Download MIDI Pro RC1 (.tpp)](./com.printerlight.midipro_RC1_WINDOWS.tpp)**
-
-**Windows only (RC1)**  
-🍎 macOS support is currently in development.  
-🐧 Linux support is planned.
-
----
-
-## ❤️ Support MIDI Pro
-
-If MIDI Pro has improved your workflow and you'd like to support future development, consider buying me a coffee.
-
-<p align="center">
-  <a href="https://ko-fi.com/printerlight" target="_blank">
-    <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6"
-         alt="Buy Me a Coffee at Ko-fi"
-         height="48">
-  </a>
-</p>
-
-Or visit:
-
-**https://ko-fi.com/printerlight**
-
-Every contribution helps support:
-
+- 🍎 Native macOS Support
+- 🐧 Native Linux Support
 - 🚀 New Features
 - 🐞 Bug Fixes
 - 📖 Documentation
 - 🧪 Hardware Testing
-- 🌍 macOS & Linux Development
+- 🎛 Official Touch Portal Profiles
+- 🎹 Future MIDI Pro Releases
+
+Every contribution is greatly appreciated. ❤️
 
 ---
 
@@ -81,7 +110,7 @@ Every contribution helps support:
 - 🎼 Program Change
 - 🎚 Pitch Bend
 - 🎯 MIDI Learn
-- 📡 Runtime Telemetry
+- 📡 Live Runtime Telemetry
 - ⚡ TX Runtime States & Events
 - 🎛 Touch Sliders & Rotary Controls
 - 🔌 Multi-Port MIDI Support
