@@ -12,7 +12,13 @@ Download the latest Windows release here:
 
 Windows only for RC1.
 
-macOS and Linux support are currently under development.
+## Platform Support
+
+| Platform | Status |
+|----------|--------|
+| Windows | ✅ RC1 Supported |
+| macOS | 🚧 In Development |
+| Linux | 🚧 Planned |
 
 
 ## What is included?
