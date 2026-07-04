@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/hero_banner.png" alt="MIDI Pro Banner" width="100%">
+  <img src="Marketplace%20assets/hero_banner.png" alt="MIDI Pro Banner" width="100%">
 </p>
 
 # 🎹 MIDI Pro
@@ -10,23 +10,41 @@
 
 ---
 
-## 🚀 Current Release
+## 📥 Download RC1
 
-**Version:** RC1 (Windows)
+> **Latest Windows Release**
 
-The current release supports **Microsoft Windows**.
+➡️ **[Download MIDI Pro RC1 (.tpp)](./com.printerlight.midipro_RC1_WINDOWS.tpp)**
 
-Native support for **macOS** and **Linux** is currently under development.
+**Windows only (RC1)**  
+🍎 macOS support is currently in development.  
+🐧 Linux support is planned.
 
 ---
 
-## 📥 Download
+## ❤️ Support MIDI Pro
 
-Download the latest release from this repository:
+If MIDI Pro has improved your workflow and you'd like to support future development, consider buying me a coffee.
 
-➡️ **com.printerlight.midipro_RC1_WINDOWS.tpp**
+<p align="center">
+  <a href="https://ko-fi.com/printerlight" target="_blank">
+    <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6"
+         alt="Buy Me a Coffee at Ko-fi"
+         height="48">
+  </a>
+</p>
 
-or download it from the **Releases** section for the latest packaged version.
+Or visit:
+
+**https://ko-fi.com/printerlight**
+
+Every contribution helps support:
+
+- 🚀 New Features
+- 🐞 Bug Fixes
+- 📖 Documentation
+- 🧪 Hardware Testing
+- 🌍 macOS & Linux Development
 
 ---
 
@@ -43,107 +61,3 @@ or download it from the **Releases** section for the latest packaged version.
 - 🎛 Touch Sliders & Rotary Controls
 - 🔌 Multi-Port MIDI Support
 - 🚨 Panic (All Notes Off)
-
----
-
-## 💻 Platform Support
-
-| Platform | Status |
-|-----------|--------|
-| 🪟 Windows | ✅ RC1 Supported |
-| 🍎 macOS | 🚧 In Development |
-| 🐧 Linux | 🚧 Planned |
-
----
-
-## 📦 What's Included
-
-The RC1 package includes:
-
-- ✅ MIDI Pro Touch Portal Plugin (.tpp)
-- ✅ Windows Host Application
-- ✅ Interactive HTML Documentation
-- ✅ PDF User Guide (Dark Edition)
-- ✅ PDF User Guide (Light Edition)
-- ✅ Marketplace Assets
-- 🚧 Official Touch Portal Profiles (Coming Soon)
-
----
-
-## 🎛 Designed For
-
-MIDI Pro works with virtually any MIDI-compatible software or hardware, including:
-
-- Ableton Live
-- Cubase
-- REAPER
-- Studio One
-- FL Studio
-- Hardware MIDI Controllers
-- Synthesizers
-- Drum Machines
-- MIDI Lighting Systems
-- Custom MIDI Devices
-
----
-
-## ❤️ Support MIDI Pro
-
-MIDI Pro is free to use.
-
-If it has improved your workflow and you'd like to support future development, consider supporting the project on Ko-fi.
-
-☕ **Support MIDI Pro**
-
-https://ko-fi.com/printerlight
-
-Your support helps fund:
-
-- New Features
-- Bug Fixes
-- Documentation
-- Hardware Testing
-- Future Releases
-
-Every contribution is greatly appreciated.
-
----
-
-## 📖 Documentation
-
-Included with every release:
-
-- Installation Guide
-- Quick Start Guide
-- User Guide
-- Runtime Telemetry Reference
-- MIDI Learn Guide
-- Connector Reference
-- Examples & Workflows
-- Troubleshooting
-
----
-
-## 🗺️ Roadmap
-
-### RC1
-
-- ✅ Professional MIDI Actions
-- ✅ Runtime Telemetry
-- ✅ TX Events
-- ✅ MIDI Learn
-- ✅ Touch Connectors
-- ✅ Multi-Port MIDI
-
-### RC2 (Planned)
-
-- MIDI Translator
-- Input Bindings
-- RX Runtime Telemetry
-- OSC Support
-- Workflow Automation
-- Additional DAW Profiles
-
----
-
-Built with ❤️ by **PrinterLight**
