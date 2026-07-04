@@ -1,6 +1,31 @@
 <p align="center">
   <img src="images/hero_banner.png" alt="MIDI Pro Banner" width="100%">
 </p>
+---
+
+# ❤️ Support MIDI Pro
+
+If MIDI Pro has improved your workflow and you'd like to support future development, consider supporting the project.
+
+<p align="center">
+
+<a href="https://ko-fi.com/printerlight">
+<img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" height="50" alt="Support on Ko-fi">
+</a>
+
+&nbsp;&nbsp;&nbsp;
+
+<a href="https://paypal.me/printerlight">
+<img src="https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Donate via PayPal">
+</a>
+
+</p>
+
+📧 **Support & Contact**
+
+**theprinterlightstudio@gmail.com**
+
+Every contribution is greatly appreciated. ❤️
 
 # 🎹 MIDI Pro
 
