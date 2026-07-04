@@ -21,6 +21,29 @@
 
 **MIDI Pro** is a professional Touch Portal plugin that provides powerful MIDI control, live runtime telemetry, MIDI Learn, touch connectors, and automation workflows for DAWs, synthesizers, MIDI controllers, lighting systems, and external MIDI hardware.
 
+<p align="center">
+<table>
+<tr>
+<td align="center">
+<b>☕ Support on Ko-fi</b><br><br>
+<a href="https://ko-fi.com/printerlight">
+<img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6"
+     height="55"
+     alt="Support on Ko-fi">
+</a>
+</td>
+<td width="40"></td>
+<td align="center">
+<b>💛 Donate via PayPal</b><br><br>
+<a href="https://paypal.me/printerlight">
+<img src="https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white"
+     alt="Donate via PayPal">
+</a>
+</td>
+</tr>
+</table>
+</p>
+
 ---
 
 <a id="toc"></a>
@@ -94,30 +117,7 @@ Choose your preferred format:
 <a id="support-the-project"></a>
 ## ❤️ Support MIDI Pro
 
-MIDI Pro is a free project developed in my spare time. If it has improved your workflow and you'd like to help support future development, consider supporting the project through Ko-fi or PayPal.
-
-<p align="center">
-<table>
-<tr>
-<td align="center">
-<b>☕ Support on Ko-fi</b><br><br>
-<a href="https://ko-fi.com/printerlight">
-<img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6"
-     height="55"
-     alt="Support on Ko-fi">
-</a>
-</td>
-<td width="40"></td>
-<td align="center">
-<b>💛 Donate via PayPal</b><br><br>
-<a href="https://paypal.me/printerlight">
-<img src="https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white"
-     alt="Donate via PayPal">
-</a>
-</td>
-</tr>
-</table>
-</p>
+MIDI Pro is a free project developed in my spare time. If it has improved your workflow and you'd like to help support future development, consider supporting the project through Ko-fi or PayPal (buttons at the top of this page).
 
 Your support helps fund:
 
